@@ -1,5 +1,6 @@
 package com.printmanagement.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -51,5 +52,8 @@ public interface OrdersRepository extends JpaRepository<OrdersEntity, Long> {
 			+ " ORDER BY customer_id ASC, orderdate ASC Limit ?8, ?9 ", nativeQuery = true)
 	List<OrdersEntity> findByFilter2(Long customerId, String status, String content, String startDate, String endDate, String startPaymentDate, String endPaymentDate, int page, int limit);
 
-
+	@Query(value = "SELECT COUNT(id) as count, SUM(total) as total, SUM(paid) as paid, SUM(debt) as debt, SUM(area) as area FROM orders "
+			+ " WHERE TRUE AND (?1 is null or ?1 = '' or orderdate >= ?1) " 
+			+ " AND (?2 is null or ?2 = '' or orderdate <= ?2) ", nativeQuery = true)
+	Object reportBusinessPerformanceOrder(Date startDate, Date endDate);
 }

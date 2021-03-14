@@ -14,6 +14,9 @@ public class CostDTO extends AbstractDTO<CostDTO>{
 	private Long quantity;
 	private Long price;
 	private Long total;
+	private String startDate;
+	private String endDate;
+	private Long totalAll;
 	
 	public String getName() {
 		return name;
@@ -57,6 +60,24 @@ public class CostDTO extends AbstractDTO<CostDTO>{
 	}
 	public void setTotal(Long total) {
 		this.total = total;
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	public Long getTotalAll() {
+		return totalAll;
+	}
+	public void setTotalAll(Long totalAll) {
+		this.totalAll = totalAll;
 	}
 	
 	

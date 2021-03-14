@@ -9,7 +9,7 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>Danh sách sản phẩm</title>
+		<title>Danh sách đơn hàng</title>
 	</head>
 
 	<body>
@@ -50,10 +50,10 @@
 											<div class="row" style="max-width: 1300px;padding: 2px;">
 												<div class="col-xs-5" >
 													&nbsp&nbspNgày đơn hàng: 												
-													<form:input type="text" path="startDate" id="startDate" cssClass="datepk" readonly="true" style="width: 30%;"/>
+													<form:input type="text" path="startDate" id="startDate" cssClass="datepk"  style="width: 30%;"/>
 													<input type="hidden" id="startDateHide"  />
 													 &nbsp&nbsp -  &nbsp&nbsp
-													<form:input type="text" path="endDate" id="endDate" cssClass="datepk" readonly="true" style="width: 30%;"/>
+													<form:input type="text" path="endDate" id="endDate" cssClass="datepk" style="width: 30%;"/>
 													<input type="hidden" id="endDateHide"  />
 												</div>
 												<div class="col-md-2 col-lg-2">
@@ -82,9 +82,9 @@
 											<div class="row" style="max-width: 1300px;padding: 2px;">
 												<div class="col-xs-5" >
 													Ngày thanh toán: 												
-													<form:input type="text" path="startPaymentDate" id="startPaymentDate" cssClass="datepk" readonly="true" style="width: 30%;" />
+													<form:input type="text" path="startPaymentDate" id="startPaymentDate" cssClass="datepk"  style="width: 30%;" />
 													 &nbsp&nbsp -  &nbsp&nbsp
-													<form:input type="text" path="endPaymentDate" id="endPaymentDate" cssClass="datepk" readonly="true" style="width: 30%;"/>
+													<form:input type="text" path="endPaymentDate" id="endPaymentDate" cssClass="datepk"  style="width: 30%;"/>
 												</div>
 												<div class="col-xs-4">
 													<form:input id="content" path="content" placeholder="Nội dung lọc ..."  style="width:100%"/>

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
 <c:url var="adminURL" value="/quan-tri/"/>
+<c:url var="reportAjaxURL" value="/ajax/report/reportbusinessperformanceajax" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -31,7 +32,7 @@
 				</h4>
 					
 			<div class="widget-toolbar">
-				<a href="#" data-action="collapse">
+				<a href="#" data-action="collapse" class='collapse-show'>
 					<i class="ace-icon fa fa-chevron-up"></i>
 				</a>
 			</div>
@@ -122,7 +123,7 @@
 			</h4>
 
 			<div class="widget-toolbar">
-				<a href="#" data-action="collapse">
+				<a href="#" data-action="collapse" class='collapse-show'>
 					<i class="ace-icon fa fa-chevron-up"></i>
 				</a>
 			</div>
@@ -139,6 +140,10 @@
 							
 							<th>
 								<i class="ace-icon fa fa-caret-right blue"></i>Khách hàng
+							</th>
+							
+							<th>
+								<i class="ace-icon fa fa-caret-right blue"></i>Nội dung
 							</th>
 
 							<th class="hidden-480">
@@ -165,6 +170,8 @@
 	
 								<td><a title='Xem chi tiết' target="blank" href='${adminURL}/khach-hang/chinh-sua?id=${item.customer.id}'>${item.customer.name}</a></td>
 								
+								<td style="max-width:400px">${item.content}</td>
+								
 								<td class="hidden-480">
 									<span class="label ${item.statusAlert } arrowed-right arrowed-in">${item.status }</span>
 								</td>
@@ -180,7 +187,7 @@
 							
 							<c:set var="total1" value="${total1+item.total}" scope="page"/>
 						</c:forEach>
-						<tr style="background-color: yellow"><td>Tổng tộng</td><td></td><td></td><td></td>
+						<tr style="background-color: yellow"><td>Tổng tộng</td><td></td><td></td><td></td><td></td>
 							<td><b class="red">$ <fmt:formatNumber type="number" groupingUsed="true" value="${total1}"/></b></td>
 						</tr>
 					</tbody>
@@ -190,7 +197,103 @@
 	</div><!-- /.widget-box -->
 </div>       
       
-      
+<div class="col-sm-10" style="margin: 30px">
+	<div class="widget-box transparent">
+		<div class="widget-header widget-header-flat">
+			<h4 class="widget-title lighter pull-left">
+				<i class="ace-icon fa fa-star orange "></i>
+				Hiệu quả kinh doanh
+			</h4>
+			<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+				<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+					<label class="label label-success">Từ ngày</label>
+				</div>
+				<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+					<input type="text" name="" id="startDate" class="datepk"  style="width:100%">
+					<input type="hidden" id="startDateHide"  />
+				</div>
+
+			</div>
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+				<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+					<label class="label label-success">Đến ngày</label>
+				</div>
+				<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+					<input type="text" name="" id="endDate" class="datepk"  style="width:100%">
+					<input type="hidden" id="endDateHide"  />
+				</div>
+
+			</div>
+			<div class="widget-toolbar">
+				<a href="#" data-action="collapse">
+					<i class="ace-icon fa fa-chevron-up"></i>
+				</a>
+			</div>
+		</div>
+
+		<div class="widget-body" style="display: block; max-height: 270px; overflow: overlay;">
+			<div class="widget-main no-padding WordSection1">
+
+			</div><!-- /.widget-main -->
+		</div><!-- /.widget-body -->
+	</div><!-- /.widget-box -->
+</div> 
+<script>
+$('.datepk').datepicker({
+    dateFormat: 'dd/mm/yy'
+});
+$(".datepk").datepicker("setDate", new Date());
+
+$('select').select2();
+$('.select2-container').css("padding", "initial");
+
+$("#startDate").change(function () {
+	let date = $(this).val().replace( /(\d{2})\/(\d{2})\/(\d{4})/, "$3/$2/$1");
+	$("#startDateHide").val(date);
+	$("#startDateHide").change();
+});
+
+$("#endDate").change(function () {
+	let date = $(this).val().replace( /(\d{2})\/(\d{2})\/(\d{4})/, "$3/$2/$1");
+	$("#endDateHide").val(date);
+	$("#endDateHide").change();
+});
+
+setDateReport();
+$("#startDate").change();
+$("#endDate").change();
+$("#endDate").change();
+
+$("#endDateHide").change(function () {
+	getReportBusiness();
+});
+$("#startDateHide").change(function () {
+	getReportBusiness();
+});
+
+getReportBusiness();
+
+function getReportBusiness() {
+	let startDate = $("#startDateHide").val();
+	let endDate = $("#endDateHide").val();
+	let href = "${reportAjaxURL}?startDate="+startDate+"&endDate="+endDate;
+	 $.get(href,function(data,status){
+         $(".WordSection1").html(data);
+     });
+}
+
+function setDateReport(){
+	var date = new Date();
+	var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+	var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+	$("#startDate").datepicker("setDate", firstDay);
+	$("#endDate").datepicker("setDate", lastDay);
+	
+}
+
+</script>     
+     
      <div class="col-sm-7" style="margin: 30px"> 
      	<div id="chartContainer1" style="height: 400px; width: 100%;"></div>     
      </div>
@@ -249,8 +352,8 @@
 	      			]
 	      		});
 		  	chart1.render();
-		  	chart2.render();
-      
+		  	chart2.render();		  	
+		  	
       </script>
             
         </div>
@@ -259,6 +362,9 @@
 
 <script type="text/javascript">
 $(".dashboard").addClass("active");
+window.addEventListener('load', function () {
+	$('.collapse-show').click();
+})
 </script>
 </body>
 </html>

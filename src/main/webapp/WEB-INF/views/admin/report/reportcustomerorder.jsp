@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
-<c:url var="reportAjaxURL" value="/ajax/reportcustomerorderajax" />
+<c:url var="reportAjaxURL" value="/ajax/report/reportcustomerorderajax" />
 <c:url var="reportURL" value="/quan-tri/bao-cao" />
 <c:url var="rootURL" value="/" />
 <!DOCTYPE html>

@@ -95,6 +95,7 @@ D:\JEE\workspace_3\printmanagement\src\main\java\com\printmanagement\repository\
 D:\JEE\workspace_3\printmanagement\src\main\java\com\printmanagement\entity\CustomerTypeEntity.java
 D:\JEE\workspace_3\printmanagement\src\main\java\com\printmanagement\controller\admin\UserController.java
 D:\JEE\workspace_3\printmanagement\src\main\java\com\printmanagement\api\admin\UserAPI.java
+D:\JEE\workspace_3\printmanagement\src\main\java\com\printmanagement\dto\ReportBusinessPerformanceDTO.java
 D:\JEE\workspace_3\printmanagement\src\main\java\com\printmanagement\entity\PurchaseMaterialDetailEntity.java
 D:\JEE\workspace_3\printmanagement\src\main\java\com\printmanagement\util\WaterMarkToWordUtil.java
 D:\JEE\workspace_3\printmanagement\src\main\java\com\printmanagement\config\JPAConfig.java

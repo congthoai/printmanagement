@@ -12,7 +12,7 @@
 
 	<body>
 		<div class="main-content">
-		<form action="<c:url value='/quan-tri/nhap-vat-tu/danh-sach?/page=${model.page }&limit=${model.limit }'/>" id="formSubmit" method="get">
+		<form:form id="formSubmit" method="get" modelAttribute="model">
 			
 				<div class="main-content-inner">
 					<div class="breadcrumbs ace-save-state" id="breadcrumbs">
@@ -34,6 +34,18 @@
 								</c:if>
 								<div class="widget-box table-filter">
 									<div class="table-btn-controls">
+										<div class="pull-left tableTools-container"><br>
+											<div class="col-xs-10">
+												<form:input id="startDate" type="text" path="startDate" placeholder="  Từ ngày ..." cssClass="datepk" style="width: 45%;"/>
+												&nbsp - &nbsp
+												<form:input id="endDate" type="text" path="endDate" placeholder="  Đến ngày ..." cssClass="datepk" style="width: 45%;"/>
+											</div>
+											<div class="col-md-2 pull-right">
+												<button id="btnFillter" type="submit" class="dt-button buttons-html5 btn btn-white btn-primary btn-bold">
+													 <span> <i class="fa fa-search pink"></i> </span>
+												</button>
+											</div>
+										</div>
 										<div class="pull-right tableTools-container">
 											<div class="dt-buttons btn-overlap btn-group">
 												<c:url var="createpurchasematerialURL" value="/quan-tri/nhap-vat-tu/chinh-sua"/>
@@ -63,8 +75,8 @@
 														<th><input type="checkbox" id="checkAll"></th>
 														<th>Số phiếu</th>
 														<th>Ngày</th>
-														<th>Tổng tiền</th>
 														<th>Cập nhật lần cuối</th>
+														<th>Tổng tiền</th>
 														<th>Chức năng</th>
 													</tr>
 												</thead>
@@ -74,8 +86,8 @@
 															<td><input type="checkbox" id="checkbox_${item.id}" value="${item.id}"></td>
 															<td>${item.code}</td>
 															<td><fmt:formatDate pattern = "dd/MM/yyyy hh:mm:ss" value = "${item.purchaseDate}" /></td>
-															<td><fmt:formatNumber type="number" groupingUsed="true" value="${item.total}"/> ₫</td>
 															<td><fmt:formatDate pattern = "dd/MM/yyyy hh:mm:ss" value = "${item.modifiedDate}" /></td>
+															<td><fmt:formatNumber type="number" groupingUsed="true" value="${item.total}"/> ₫</td>
 															<td>
 																<c:url var="updatepurchasematerialURL" value="/quan-tri/nhap-vat-tu/chinh-sua">
 																	<c:param name="id" value="${item.id}"/>															
@@ -88,6 +100,10 @@
 															</td>
 														</tr>
 													</c:forEach>
+														<tr style="border:0; background:yellow">
+															<td colspan = 4 style="border:0">Tổng tất cả:</td>
+															<td colspan = 2><fmt:formatNumber type="number" groupingUsed="true" value="${model.totalAll}"/> ₫</td>
+														</tr>
 												</tbody>
 											</table>
 											<ul class="pagination" id="pagination"></ul>
@@ -100,7 +116,7 @@
 						</div>
 					</div>
 				</div>
-		</form>
+		</form:form>
 		</div>
 		<!-- /.main-content -->
 		<script>
@@ -156,6 +172,30 @@
 							}
 						});
 			}
+			
+			$('.datepk').datepicker({
+			    dateFormat: "dd/mm/yy"
+			});
+			
+			if($("#startDate").val() != "") {
+				$("#startDate").datepicker("setDate", new Date($("#startDate").val()));
+			} 
+			
+			if($("#endDate").val() != "") {
+				$("#endDate").datepicker("setDate", new Date($("#endDate").val()));
+			} 
+			
+ 			$('#formSubmit').submit(function () {
+				let startDate = $("#startDate").val().replace( /(\d{2})\/(\d{2})\/(\d{4})/, "$3/$2/$1");
+				let endDate = $("#endDate").val().replace( /(\d{2})\/(\d{2})\/(\d{4})/, "$3/$2/$1");
+				$("#startDate").val(startDate);
+				$("#endDate").val(endDate);
+			}); 
+			
+			$("#btnFillter").click(function () {
+				$('#formSubmit').submit();
+			});
+			
 			$(".cong-no").addClass("open");
 		</script>
 	</body>

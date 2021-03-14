@@ -15,8 +15,6 @@
    		<intercept-url pattern="/quan-tri/trang-chu/**" access="hasAnyRole('ADMIN')" />
    		<intercept-url pattern="/quan-tri/don-gia/chinh-sua-nhanh/**" access="hasAnyRole('ADMIN')" />
    		
-   		<intercept-url pattern="/api/cost/**" access="hasAnyRole('ADMIN')" />
-   		<intercept-url pattern="/api/item/**" access="hasAnyRole('ADMIN')" />
    		<intercept-url pattern="/api/purchasematerial/**" access="hasAnyRole('ADMIN')" />
    		<intercept-url pattern="/api/purchasematerialdetail/**" access="hasAnyRole('ADMIN')" />
    		<intercept-url pattern="/api/pricelist/**" access="hasAnyRole('ADMIN')" />

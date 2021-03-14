@@ -3,6 +3,8 @@ package com.printmanagement.controller.admin;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,8 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.printmanagement.dto.OrdersDTO;
+import com.printmanagement.dto.ReportBusinessPerformanceDTO;
+import com.printmanagement.service.ICostService;
 import com.printmanagement.service.ICustomerService;
 import com.printmanagement.service.IOrdersService;
+import com.printmanagement.service.IPurchaseMaterialService;
 import com.printmanagement.service.IReportService;
 import com.printmanagement.util.WaterMarkToWordUtil;
 
@@ -31,7 +36,58 @@ public class ReportController {
 	private WaterMarkToWordUtil waterMarkUtil;
 	@Autowired
 	private IReportService reportService;
+	@Autowired
+	private ICostService costService;
+	@Autowired
+	private IPurchaseMaterialService purchaseService;
 
+	@RequestMapping(value = "/quan-tri/bao-cao/hieu-qua-kinh-doanh", method = RequestMethod.GET)
+	public ModelAndView reportBusinessPerformance() {
+		ModelAndView mav = new ModelAndView("admin/report/reportbusinessperformance");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/ajax/report/reportbusinessperformanceajax", method = RequestMethod.GET)
+	public ModelAndView reportCustomerOrderAjax2(HttpServletRequest request,
+			@RequestParam(value = "startDate", required = false) String startDate,
+			@RequestParam(value = "endDate", required = false) String endDate,
+			@RequestParam(value = "showTitle", required = false) Integer showTitle) {
+		ModelAndView mav = new ModelAndView("admin/report/reportbusinessperformanceajax");
+		
+		String title = "Từ ngày thành lập";
+		if(startDate != null && !startDate.equals("")) title = "Từ ngày " + startDate;
+				
+		if(startDate == null || startDate.equals("")) {
+			startDate = "1997/01/01";
+		}
+		
+		if(endDate != null) {
+			title += endDate.equals("") ? " đến nay " : " đến ngày "+endDate;	
+			if(endDate.equals("")) {
+				endDate = "2099/01/01";
+			}	
+		} else {
+			title += " đến nay ";
+			endDate = "2099/01/01";		
+		}
+		
+		Date sDate = stringToDateTime(startDate, null);
+		Date eDate = stringToDateTime(endDate, "23:59:59");
+		
+		ReportBusinessPerformanceDTO model = orderService.reportBusinessPerformanceOrder(sDate, eDate);
+		model.setTotalCost(costService.sumTotalByByCostdateBetween(sDate, eDate));
+		model.setTotalPurchaseMaterial(purchaseService.sumTotalByPurchasedateBetween(sDate, eDate));
+		model.setTotalMaterialArea(purchaseService.sumAreaByPurchasedateBetween(sDate, eDate));
+		Long revenue = model.getTotalSaleOrder() - model.getTotalCost() - model.getTotalPurchaseMaterial();
+		model.setTotalRevenue(revenue >= 0 ? revenue : 0L);
+		model.setTotalLossMoney(revenue < 0 ? revenue : 0L);
+		mav.addObject("model", model);
+		mav.addObject("title", title);
+		mav.addObject("showTitle", showTitle);
+		return mav;
+	}
+	
 	@RequestMapping(value = "/quan-tri/bao-cao/home", method = RequestMethod.GET)
 	public ModelAndView reportCustomerOrder() {
 		ModelAndView mav = new ModelAndView("admin/report/reportcustomerorder");
@@ -41,7 +97,7 @@ public class ReportController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/ajax/reportcustomerorderajax", method = RequestMethod.GET)
+	@RequestMapping(value = "/ajax/report/reportcustomerorderajax", method = RequestMethod.GET)
 	public ModelAndView reportCustomerOrderAjax(HttpServletRequest request,
 			@RequestParam(value = "customerid", required = false) Long customerid,
 			@RequestParam(value = "status", required = false) String status,
@@ -178,4 +234,27 @@ public class ReportController {
 		return rootFilePath;
 	}
 	
+	
+	public Date stringToDateTime(String strDate, String strTime) {
+        Date date = Calendar.getInstance().getTime();  
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		//DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+		
+		if(strTime == null || strTime.equals("")) {
+			strTime = "00:00:01";
+		}
+		
+		if(strDate != null && !strDate.equals("")) {
+			try {
+				Date orderDate = dateFormat.parse(strDate + " " + strTime);
+				return orderDate;
+			} catch (ParseException e) {
+				return date;
+			} 
+			
+		} else {
+			return date;
+		}
+        
+	}
 }

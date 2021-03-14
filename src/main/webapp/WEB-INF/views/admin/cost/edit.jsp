@@ -5,7 +5,7 @@
 <c:url var="costAPI" value="/api/cost" />
 <html>
 <head>
-<title>Chỉnh sửa bài viết</title>
+<title>Chi Phí</title>
 </head>
 <body>
 	<div class="main-content">
@@ -66,14 +66,16 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">Đơn giá</label>
 								<div class="col-sm-9">
-									<form:input type="number" path="price" cssClass="col-xs-10 col-sm-5 modelprice" />
+									<form:input type="number" id="modelprice" path="price" cssClass="modelprice hide" />
+									<input data-type="currency" id="modelpriceshow"  class="col-xs-10 col-sm-5 modelpriceshow" value="${model.price}" style="height:32px;"/>
 								</div>
 							</div>
 							
 							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">Thành tiền</label>
 								<div class="col-sm-9">
-									<form:input type="number" path="total" cssClass="col-xs-10 col-sm-5 modeltotal" readonly="true"/>
+									<form:input type="number" path="total" cssClass="modeltotal hide" readonly="true"/>
+									<input data-type="currency" readonly="true" id="modeltotalshow"  class="col-xs-10 col-sm-5 modeltotalshow" value="${model.total}" style="height:32px;"/>
 								</div>
 							</div>
 							
@@ -115,7 +117,7 @@
 			$.each(formData, function(i, v) {
 				data["" + v.name + ""] = v.value;
 			});
-			data["costDate"] =  Date.parse(data["costDate"]);
+			data["costDate"] =  Date.parse(data["costDate"].replace( /(\d{2})\/(\d{2})\/(\d{4})/, "$3/$2/$1"));
 			var id = $('#newId').val();
 			if (id == "") {
 				addNew(data);
@@ -160,12 +162,12 @@
 		$(".danh-muc").addClass("open");
 		
 		$('#costDate').datetimepicker({
-		    dateFormat: "yy-mm-dd",
+		    dateFormat: "dd/mm/yy",
 		    timeFormat:  "hh:mm:ss"
 		});
 		
 		$("#costDate").change(function () {
-			$("#code").val($(this).val().replace(/-/g, "").replace(" ", "-").replace(/:/g, "").replace(".0", ""));
+			$("#code").val($(this).val().replace(/\//g, "").replace(" ", "-").replace(/:/g, "").replace(".0", ""));
 		});
 		
 		if($("#costDate").val() == "") {
@@ -187,6 +189,96 @@
 		    let price = parseInt($('.modelprice').val());
 		    let total = qty * price;
 		    $(".modeltotal").val(total);
+		    $("#modeltotalshow").val(formatNumber(total + ""));
+		}
+		
+		$("#modelpriceshow").change(function () {
+			price = formatCurrencyToNumer($(this).val());
+			$(this).parent().find("#modelprice").val(price);
+			$(".modelprice").change();
+		});
+		
+		$("input[data-type='currency']").on({
+		    keyup: function() {
+		      formatCurrency($(this));
+		    }
+		});
+		$("input[data-type='currency']").keyup();
+
+		function formatNumber(n) {
+			  // format number 1000000 to 1,234,567
+			  return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+		}
+		function formatCurrencyToNumer(variable) {
+			  // format number $1,234,567₫ vnđ  to 1234567
+			  return variable.replace(/,/g, "").replace("$", "").replace("vnđ", "").replace("₫", "").replace(/ /g, "");
+		}
+		
+		function formatCurrency(input, blur) {
+		  // appends $ to value, validates decimal side
+		  // and puts cursor back in right position.
+		  
+		  // get input value
+		  var input_val = input.val();
+		  
+		  // don't validate empty input
+		  if (input_val === "") { return; }
+		  
+		  // original length
+		  var original_len = input_val.length;
+
+		  // initial caret position 
+		  var caret_pos = input.prop("selectionStart");
+		    
+		  // check for decimal
+		  if (input_val.indexOf(".") >= 0) {
+
+		    // get position of first decimal
+		    // this prevents multiple decimals from
+		    // being entered
+		    var decimal_pos = input_val.indexOf(".");
+
+		    // split number by decimal point
+		    var left_side = input_val.substring(0, decimal_pos);
+		    var right_side = input_val.substring(decimal_pos);
+
+		    // add commas to left side of number
+		    left_side = formatNumber(left_side);
+
+		    // validate right side
+		    right_side = formatNumber(right_side);
+		    
+		    // On blur make sure 2 numbers after decimal
+		    if (blur === "blur") {
+		      right_side += "00";
+		    }
+		    
+		    // Limit decimal to only 2 digits
+		    right_side = right_side.substring(0, 2);
+
+		    // join number by .
+		    input_val = left_side + "." + right_side;
+
+		  } else {
+		    // no decimal entered
+		    // add commas to number
+		    // remove all non-digits
+		    input_val = formatNumber(input_val);
+		    input_val = input_val;
+		    
+		    // final formatting
+		    if (blur === "blur") {
+		      input_val += ".00";
+		    }
+		  }
+		  
+		  // send updated string to input
+		  input.val(input_val);
+
+		  // put caret back in the right position
+		  var updated_len = input_val.length;
+		  caret_pos = updated_len - original_len + caret_pos;
+		  input[0].setSelectionRange(caret_pos, caret_pos);
 		}
 		
 	</script>

@@ -1,6 +1,7 @@
 package com.printmanagement.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,16 @@ public class PurchaseMaterialService implements IPurchaseMaterialService {
 		}
 		return rs;
 	}
+	
+	@Override
+	public List<PurchaseMaterialDTO> findByPurchasedateBetween(Date startDate, Date endDate, Pageable pageable) {
+		List<PurchaseMaterialDTO> rs = new ArrayList<>();
+		List<PurchaseMaterialEntity> entites = purchaseMaterialRepository.findByPurchasedateBetween(startDate, endDate, pageable);
+		for (PurchaseMaterialEntity entity : entites) {
+			rs.add(purchaseMaterialConverter.toDto(entity));
+		}
+		return rs;
+	}
 
 	@Override
 	public PurchaseMaterialDTO findOne(Long id) {
@@ -82,4 +93,13 @@ public class PurchaseMaterialService implements IPurchaseMaterialService {
 		return (int) purchaseMaterialRepository.count();
 	}
 
+	@Override
+	public Long sumTotalByPurchasedateBetween(Date startDate, Date endDate) {
+		return purchaseMaterialRepository.sumTotalByPurchasedateBetween(startDate, endDate) == null ? 0L : purchaseMaterialRepository.sumTotalByPurchasedateBetween(startDate, endDate);
+	}
+	
+	@Override
+	public Double sumAreaByPurchasedateBetween(Date startDate, Date endDate) {
+		return purchaseMaterialRepository.sumAreaByPurchasedateBetween(startDate, endDate) == null ? 0 :purchaseMaterialRepository.sumAreaByPurchasedateBetween(startDate, endDate);
+	}
 }

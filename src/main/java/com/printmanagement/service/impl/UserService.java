@@ -79,5 +79,12 @@ public class UserService implements IUserService {
 	public int getTotalItem() {
 		return (int) userRepository.count();
 	}
+	
+	@Override
+	public void delete(long[] ids) {
+		for (long id : ids) {
+			userRepository.delete(id);
+		}
+	}
 
 }

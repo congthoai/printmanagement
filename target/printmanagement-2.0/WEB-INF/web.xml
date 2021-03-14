@@ -62,6 +62,10 @@
         <tracking-mode>COOKIE</tracking-mode>
     </session-config> -->
     
+     <session-config>
+	    <session-timeout>360</session-timeout>
+	</session-config>
+    
      <jsp-config>
         <jsp-property-group>
             <url-pattern>*.jsp</url-pattern>

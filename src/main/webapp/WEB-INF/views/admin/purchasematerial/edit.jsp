@@ -152,7 +152,7 @@
 														<td><input style="width: 100%;" type="number" class="materialarea" id="materialarea${purchasedetail.id}" value="${purchasedetail.area}" readonly="true" style="border:none"/></td>
 														<td>
 															<input style="width: 100%;" type="number" class="materialprice hide" id="materialprice${purchasedetail.id}" value="${purchasedetail.price}"  min="0"/>
-															<input style="width: 100%;height:32px; border:none"" data-type="currency" class="showmaterialprice" id="showmaterialprice${purchasedetail.id}" value="${purchasedetail.price}" />
+															<input style="width: 100%;height:32px; border:none" data-type="currency" class="showmaterialprice" id="showmaterialprice${purchasedetail.id}" value="${purchasedetail.price}" />
 														</td>
 														<td>
 															<input style="width: 100%;" type="number" class="materialtotal hide" id="materialtotal${purchasedetail.id}" 
@@ -190,11 +190,11 @@
 		$('select').select2();
 		$('.select2-container').css("padding", "initial")
 		$('.datepk').datetimepicker({
-		    dateFormat: "yy-mm-dd",
+		    dateFormat: "dd/mm/yy",
 		    timeFormat:  "hh:mm:ss"
 		});
 		$("#purchasedate").change(function () {
-			$("#purchasematerialcode").val($(this).val().replace(/-/g, "").replace(" ", "-").replace(/:/g, "").replace(".0", ""));
+			$("#purchasematerialcode").val($(this).val().replace(/\//g, "").replace(" ", "-").replace(/:/g, "").replace(".0", ""));
 		});
 		if($("#purchasedate").val() == "") {
 			$("#purchasedate").datepicker("setDate", new Date());
@@ -221,7 +221,7 @@
 		function getDataPurchaseMaterial() {
 			id = $("#purchasematerialid").val();
 			code = $("#purchasematerialcode").val();
-			purchasedate = $("#purchasedate").val();
+			purchasedate = $("#purchasedate").val().replace( /(\d{2})\/(\d{2})\/(\d{4})/, "$3/$2/$1");
 			total = $("#purchasematerialtotal").val();
 			descrip = $("#purchasematerialdescript").val();
 					

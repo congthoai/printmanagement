@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
-<c:url var="reportAjaxURL" value="/ajax/reportcustomerorderajax" />
+<c:url var="reportAjaxURL" value="/ajax/report/reportcustomerorderajax" />
 <c:url var="reportURL" value="/quan-tri/bao-cao" />
 <c:url var="rootURL" value="/" />
 <!DOCTYPE html>
@@ -39,7 +39,7 @@
 								<label class="label label-success">Từ ngày</label>
 							</div>
 							<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-								<input type="text" name="" id="startDate" class="datepk" readonly="true" style="width:100%">
+								<input type="text" name="" id="startDate" class="datepk"  style="width:100%">
 								<input type="hidden" id="startDateHide"  />
 							</div>
 
@@ -49,7 +49,7 @@
 								<label class="label label-success">Đến ngày</label>
 							</div>
 							<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-								<input type="text" name="" id="endDate" class="datepk" readonly="true" style="width:100%">
+								<input type="text" name="" id="endDate" class="datepk"  style="width:100%">
 								<input type="hidden" id="endDateHide"  />
 							</div>
 

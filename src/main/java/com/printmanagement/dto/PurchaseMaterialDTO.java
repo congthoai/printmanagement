@@ -10,6 +10,9 @@ public class PurchaseMaterialDTO extends AbstractDTO<PurchaseMaterialDTO>{
 	private Long total;
 	private Date purchaseDate;
 	private List<PurchaseMaterialDetailDTO> purchasematerialdetails;
+	private String startDate;
+	private String endDate;
+	private Long totalAll;
 	
 	public String getName() {
 		return name;
@@ -40,6 +43,24 @@ public class PurchaseMaterialDTO extends AbstractDTO<PurchaseMaterialDTO>{
 	}
 	public void setPurchaseDate(Date purchaseDate) {
 		this.purchaseDate = purchaseDate;
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	public Long getTotalAll() {
+		return totalAll;
+	}
+	public void setTotalAll(Long totalAll) {
+		this.totalAll = totalAll;
 	}
 
 

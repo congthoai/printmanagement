@@ -1,5 +1,10 @@
 package com.printmanagement.controller.admin;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,15 +32,32 @@ public class PurchaseMaterialController {
 	
 	@RequestMapping(value= "/quan-tri/nhap-vat-tu/danh-sach", method = RequestMethod.GET)
 	public ModelAndView showList(@RequestParam(value="page", required = false) Integer page,
-			@RequestParam(value="limit", required = false) Integer limit, HttpServletRequest request) {
+			@RequestParam(value="limit", required = false) Integer limit, 
+			@RequestParam(value = "startDate", required = false) String startDate,
+			@RequestParam(value = "endDate", required = false) String endDate,
+			HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("admin/purchasematerial/list");
 		PurchaseMaterialDTO model = new PurchaseMaterialDTO();
 		model.setPage(page != null ? page : 1);
 		model.setLimit(limit != null ? limit : 10);
+		model.setStartDate((startDate == null || startDate.equals(""))? "" : startDate);
+		model.setEndDate((endDate == null || endDate.equals(""))? "" : endDate);	
+		if(startDate == null || startDate.equals("")) {
+			startDate = "1997/01/01";
+		}
+		
+		if(endDate == null || endDate.equals("")) {
+			endDate = "2099/01/01";
+		}
+		
+		Date sDate = stringToDateTime(startDate, null);
+		Date eDate = stringToDateTime(endDate, "23:59:59");
+		
 		Pageable pageable = new PageRequest(model.getPage()-1, model.getLimit());
-		model.setListResult(purchaseMaterialService.findAll(pageable));
-		model.setTotalItem(purchaseMaterialService.getTotalItem());
+		model.setListResult(purchaseMaterialService.findByPurchasedateBetween(sDate, eDate, pageable));
+		model.setTotalItem(purchaseMaterialService.findByPurchasedateBetween(sDate, eDate, new PageRequest(0, 999999)).size());
 		model.setTotalPage((int) Math.ceil((double) model.getTotalItem() / model.getLimit()));
+		model.setTotalAll(purchaseMaterialService.sumTotalByPurchasedateBetween(sDate, eDate));
 		if(request.getParameter("message") != null) {
 			Map<String, String> message = MessageUtil.getInstance().getMessage(request.getParameter("message"));
 			mav.addObject("message", message.get("message"));
@@ -64,5 +86,28 @@ public class PurchaseMaterialController {
 		mav.addObject("materials", materialService.findAllMapIdName());
 		mav.addObject("model", model);
 		return mav;
+	}
+	
+	public Date stringToDateTime(String strDate, String strTime) {
+        Date date = Calendar.getInstance().getTime();  
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		//DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+		
+		if(strTime == null || strTime.equals("")) {
+			strTime = "00:00:01";
+		}
+		
+		if(strDate != null && !strDate.equals("")) {
+			try {
+				Date orderDate = dateFormat.parse(strDate + " " + strTime);
+				return orderDate;
+			} catch (ParseException e) {
+				return date;
+			} 
+			
+		} else {
+			return date;
+		}
+        
 	}
 }

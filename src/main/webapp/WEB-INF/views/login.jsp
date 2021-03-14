@@ -27,11 +27,11 @@
 				</div><hr><br>
 				<form action="j_spring_security_check" id="formLogin" method="post">
 					<div class="form-group">
-						<input type="text" class="form-control" value="admin" id="userName" name="j_username" placeholder="Tên đăng nhập">
+						<input type="text" class="form-control" value="" id="userName" name="j_username" placeholder="Tên đăng nhập">
 					</div>
 
 					<div class="form-group">
-						<input type="password" class="form-control" value="123456" id="password" name="j_password" placeholder="Mật khẩu">
+						<input type="password" class="form-control" value="" id="password" name="j_password" placeholder="Mật khẩu">
 					</div>
 					<button type="submit" class="btn btn-primary" >Đăng nhập</button>
 				</form>

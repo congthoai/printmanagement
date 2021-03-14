@@ -1,6 +1,7 @@
 package com.printmanagement.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,16 @@ public class CostService implements ICostService {
 		}
 		return rs;
 	}
+	
+	@Override
+	public List<CostDTO> findByCostdateBetween(Date startDate, Date endDate, Pageable pageable) {
+		List<CostDTO> rs = new ArrayList<>();
+		List<CostEntity> entites = costRepository.findByCostdateBetween(startDate, endDate, pageable);
+		for (CostEntity entity : entites) {
+			rs.add(costConverter.toDto(entity));
+		}
+		return rs;
+	}
 
 	@Override
 	public CostDTO findOne(Long id) {
@@ -72,4 +83,8 @@ public class CostService implements ICostService {
 		return (int) costRepository.count();
 	}
 
+	@Override
+	public Long sumTotalByByCostdateBetween(Date startDate, Date endDate) {
+		return costRepository.sumTotalByByCostdateBetween(startDate, endDate) == null ? 0L : costRepository.sumTotalByByCostdateBetween(startDate, endDate); 
+	}
 }

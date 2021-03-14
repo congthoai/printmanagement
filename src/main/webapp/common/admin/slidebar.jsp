@@ -89,8 +89,8 @@
 				<li class=""><a href="<c:url value='/quan-tri/bao-cao/home'/>">
 						<i class="menu-icon fa fa-caret-right"></i>Công nợ
 				</a> <b class="arrow"></b></li>
-				<li class=""><a href="<c:url value='/quan-tri/tai-khoan/danh-sach?page=1&limit=2'/>">
-						<i class="menu-icon fa fa-caret-right"></i>Người dùng
+				<li class=""><a href="<c:url value='/quan-tri/bao-cao/hieu-qua-kinh-doanh'/>">
+						<i class="menu-icon fa fa-caret-right"></i>KQ Kinh doanh
 				</a> <b class="arrow"></b></li>
 			</ul></li>
 	</ul>

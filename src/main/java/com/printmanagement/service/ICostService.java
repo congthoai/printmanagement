@@ -1,5 +1,6 @@
 package com.printmanagement.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -13,4 +14,6 @@ public interface ICostService {
 	CostDTO findOne(Long id);
 	void delete(long[] ids);
 	int getTotalItem();
+	List<CostDTO> findByCostdateBetween(Date startDate, Date endDate, Pageable pageable);
+	Long sumTotalByByCostdateBetween(Date startDate, Date endDate);
 }

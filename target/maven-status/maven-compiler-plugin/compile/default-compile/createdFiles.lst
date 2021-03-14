@@ -71,6 +71,7 @@ com\printmanagement\controller\admin\UserController$2.class
 com\printmanagement\controller\admin\OrdersController.class
 com\printmanagement\controller\admin\ReportController.class
 com\printmanagement\dto\OrdersDTO.class
+com\printmanagement\dto\ReportBusinessPerformanceDTO.class
 com\printmanagement\service\impl\ReportService.class
 com\printmanagement\service\impl\RoleService.class
 com\printmanagement\controller\admin\UserController$1.class

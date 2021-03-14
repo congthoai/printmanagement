@@ -9,7 +9,7 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>Danh sách sản phẩm</title>
+		<title>Danh sách đơn hàng</title>
 	</head>
 
 	<body>
