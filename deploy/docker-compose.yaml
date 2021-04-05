@@ -1,0 +1,41 @@
+# VIẾT THEO CÚ PHÁP YAML, CHÚ Ý CHÍNH XÁC KHOẢNG TRẮNG ĐẦU CÁC DÒNG
+# Đường dẫn để ánh xạ các tài nguyên:
+# + /home/codecuathoai/tomcat/webapps/ROOT.war
+# + /home/codecuathoai/sqlscript/printmanagement.sql
+# + /home/codecuathoai/mysql
+
+version: "3"                      # chọn viết theo bản 3 docs.docker.com/compose/compose-file/
+
+services:                         # CÁC DỊCH VỤ (CONTAINER) NĂM TRONG services
+  nct-tomcat:                    # (((1))) BẮT ĐẦU TẠO DỊCH VỤ THỨ NHẤT
+    image: "tomcat:jdk8-openjdk"     # Image tạo ra dịch vụ
+    container_name: thoaitomcat     # Tên container khi chạy
+    restart: always
+    hostname: tomcat
+    networks:
+      - my-network                # nối vào mạng my-network (tạo mạng này ở dưới)
+    ports:
+      - "80:8080"                 # Mở cổng 8080 public, ánh xạ vào 80
+    volumes:                      # Ánh xạ thự mục vào container
+      - /home/codecuathoai/tomcat/webapps:/usr/local/tomcat/webapps         
+
+  nct-mysql:                      # (((3))) TẠO DỊCH VỤ MYSQL
+    image: "mysql:latest"
+    container_name: thoaimysql
+    command: mysqld --default-authentication-plugin=mysql_native_password --sql_mode=ALLOW_INVALID_DATES
+    restart: always
+    hostname: mysql
+    networks:
+      - my-network
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root   #Thiết lập password
+      MYSQL_DATABASE: printmanagement
+    volumes:
+      - /home/codecuathoai/mysql:/var/lib/mysql  # thư mục lưu DB
+      - /home/codecuathoai/sqlscript/printmanagement.sql:/docker-entrypoint-initdb.d/0_init.sql
+    # - /home/codecuathoai/mysql/my.cnf:/etc/mysql/my.cnf  # ánh xạ file cấu hình
+networks:                             # TẠO NETWORK
+  my-network:
+    driver: bridge
