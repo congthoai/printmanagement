@@ -32,7 +32,7 @@
 				</h4>
 					
 			<div class="widget-toolbar">
-				<a href="#" data-action="collapse" class='collapse-show'>
+				<a href="#" data-action="collapse" >
 					<i class="ace-icon fa fa-chevron-up"></i>
 				</a>
 			</div>
@@ -123,7 +123,7 @@
 			</h4>
 
 			<div class="widget-toolbar">
-				<a href="#" data-action="collapse" class='collapse-show'>
+				<a href="#" data-action="collapse">
 					<i class="ace-icon fa fa-chevron-up"></i>
 				</a>
 			</div>
@@ -225,8 +225,8 @@
 				</div>
 
 			</div>
-			<div class="widget-toolbar">
-				<a href="#" data-action="collapse">
+			<div class="widget-toolbar" >
+				<a href="#" data-action="collapse" class='collapse-show'>
 					<i class="ace-icon fa fa-chevron-up"></i>
 				</a>
 			</div>
@@ -361,10 +361,10 @@ function setDateReport(){
 </div><!-- /.main-content -->
 
 <script type="text/javascript">
-$(".dashboard").addClass("active");
-window.addEventListener('load', function () {
-	$('.collapse-show').click();
-})
+	$(".dashboard").addClass("active");
+	window.addEventListener('load', function() {
+		$('.collapse-show').click();
+	})
 </script>
 </body>
 </html>

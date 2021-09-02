@@ -3,6 +3,8 @@ package com.printmanagement.controller.admin;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,11 +38,19 @@ public class PurchaseMaterialController {
 			@RequestParam(value="limit", required = false) Integer limit, 
 			@RequestParam(value = "startDate", required = false) String startDate,
 			@RequestParam(value = "endDate", required = false) String endDate,
+			@RequestParam(value = "isFilter", required = false) Integer isFilter,
 			HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("admin/purchasematerial/list");
 		PurchaseMaterialDTO model = new PurchaseMaterialDTO();
 		model.setPage(page != null ? page : 1);
 		model.setLimit(limit != null ? limit : 10);
+		model.setIsFilter((isFilter != null && isFilter == 1) ? isFilter : 0);
+		if(model.getIsFilter() != 1) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+			startDate = LocalDate.now().withDayOfMonth(1).format(formatter);
+			endDate = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).format(formatter);
+		}
+		
 		model.setStartDate((startDate == null || startDate.equals(""))? "" : startDate);
 		model.setEndDate((endDate == null || endDate.equals(""))? "" : endDate);	
 		if(startDate == null || startDate.equals("")) {
@@ -52,8 +63,9 @@ public class PurchaseMaterialController {
 		
 		Date sDate = stringToDateTime(startDate, null);
 		Date eDate = stringToDateTime(endDate, "23:59:59");
+		Sort sort = new Sort(Sort.Direction.DESC,"id");
 		
-		Pageable pageable = new PageRequest(model.getPage()-1, model.getLimit());
+		Pageable pageable = new PageRequest(model.getPage()-1, model.getLimit(), sort);
 		model.setListResult(purchaseMaterialService.findByPurchasedateBetween(sDate, eDate, pageable));
 		model.setTotalItem(purchaseMaterialService.findByPurchasedateBetween(sDate, eDate, new PageRequest(0, 999999)).size());
 		model.setTotalPage((int) Math.ceil((double) model.getTotalItem() / model.getLimit()));

@@ -25,6 +25,7 @@ public class AbstractDTO<T> {
 	private String message;
 	private String type;
 	private String description;
+	private Integer isFilter;
 	private Pageable pageable;
 	protected String tableName;
 	
@@ -149,6 +150,12 @@ public class AbstractDTO<T> {
 	}
 	public void setTableName(String tableName) {
 		this.tableName = tableName;
+	}
+	public Integer getIsFilter() {
+		return isFilter;
+	}
+	public void setIsFilter(Integer isFilter) {
+		this.isFilter = isFilter;
 	}
 	
 	

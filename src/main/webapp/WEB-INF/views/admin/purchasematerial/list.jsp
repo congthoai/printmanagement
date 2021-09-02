@@ -36,6 +36,7 @@
 									<div class="table-btn-controls">
 										<div class="pull-left tableTools-container"><br>
 											<div class="col-xs-10">
+												<form:input id="isFilter" type="hidden" path="isFilter"/>
 												<form:input id="startDate" type="text" path="startDate" placeholder="  Từ ngày ..." cssClass="datepk" style="width: 45%;"/>
 												&nbsp - &nbsp
 												<form:input id="endDate" type="text" path="endDate" placeholder="  Đến ngày ..." cssClass="datepk" style="width: 45%;"/>
@@ -74,6 +75,7 @@
 													<tr>
 														<th><input type="checkbox" id="checkAll"></th>
 														<th>Số phiếu</th>
+														<th>Nội dung</th>
 														<th>Ngày</th>
 														<th>Cập nhật lần cuối</th>
 														<th>Tổng tiền</th>
@@ -85,6 +87,7 @@
 														<tr>
 															<td><input type="checkbox" id="checkbox_${item.id}" value="${item.id}"></td>
 															<td>${item.code}</td>
+															<td>${item.description}</td>
 															<td><fmt:formatDate pattern = "dd/MM/yyyy hh:mm:ss" value = "${item.purchaseDate}" /></td>
 															<td><fmt:formatDate pattern = "dd/MM/yyyy hh:mm:ss" value = "${item.modifiedDate}" /></td>
 															<td><fmt:formatNumber type="number" groupingUsed="true" value="${item.total}"/> ₫</td>
@@ -101,7 +104,7 @@
 														</tr>
 													</c:forEach>
 														<tr style="border:0; background:yellow">
-															<td colspan = 4 style="border:0">Tổng tất cả:</td>
+															<td colspan = 5 style="border:0">Tổng tất cả:</td>
 															<td colspan = 2><fmt:formatNumber type="number" groupingUsed="true" value="${model.totalAll}"/> ₫</td>
 														</tr>
 												</tbody>
@@ -193,6 +196,7 @@
 			}); 
 			
 			$("#btnFillter").click(function () {
+				$("#isFilter").val(1);
 				$('#formSubmit').submit();
 			});
 			

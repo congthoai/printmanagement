@@ -36,6 +36,7 @@
 									<div class="table-btn-controls">
 										<div class="pull-left tableTools-container"><br>
 											<div class="col-xs-10">
+												<form:input id="isFilter" type="hidden" path="isFilter"/>
 												<form:input id="startDate" type="text" path="startDate" placeholder="  Từ ngày ..." cssClass="datepk" style="width: 45%;"/>
 												&nbsp - &nbsp
 												<form:input id="endDate" type="text" path="endDate" placeholder="  Đến ngày ..." cssClass="datepk" style="width: 45%;"/>
@@ -199,10 +200,11 @@
 			}); 
 			
 			$("#btnFillter").click(function () {
+				$("#isFilter").val(1);
 				$('#formSubmit').submit();
 			});
 			
-			$(".danh-muc").addClass("open");
+			$(".cong-no").addClass("open");
 		</script>
 	</body>
 	</html>
