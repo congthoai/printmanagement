@@ -15,12 +15,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.printmanagement.dto.MaterialDTO;
 import com.printmanagement.service.IMaterialService;
+import com.printmanagement.service.IMaterialTypeService;
 import com.printmanagement.util.MessageUtil;
 
 @Controller(value="materialControllerOfAdmin")
 public class MaterialController {
 	@Autowired
 	private IMaterialService materialService;
+	@Autowired
+	IMaterialTypeService materialTypeService;
 	
 	@RequestMapping(value= "/quan-tri/vat-tu/danh-sach", method = RequestMethod.GET)
 	public ModelAndView showList(@RequestParam(value="page", required = false) Integer page,
@@ -58,6 +61,7 @@ public class MaterialController {
 			mav.addObject("alert", message.get("alert"));
 		}
 
+		mav.addObject("materialtypes", materialTypeService.findAllMapIdName());
 		mav.addObject("model", model);
 		return mav;
 	}

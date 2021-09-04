@@ -1,5 +1,6 @@
 package com.printmanagement.converter;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.printmanagement.dto.MaterialDTO;
@@ -7,6 +8,10 @@ import com.printmanagement.entity.MaterialEntity;
 
 @Component
 public class MaterialConverter {
+	
+	@Autowired
+	MaterialTypeConverter materialTypeConverter;
+	
 	public MaterialDTO toDto(MaterialEntity entity) {
 		MaterialDTO dto = new MaterialDTO();
 		dto.setId(entity.getId());
@@ -14,6 +19,8 @@ public class MaterialConverter {
 		dto.setCode(entity.getCode());
 		dto.setSize(entity.getSize());
 		dto.setWidth(entity.getWidth());
+		dto.setMaterialtypeid(entity.getMaterialtype().getId());
+		dto.setMaterialtype(materialTypeConverter.toDto(entity.getMaterialtype()));
 		
 		return dto;
 	}

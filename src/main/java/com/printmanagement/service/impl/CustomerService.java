@@ -5,12 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.printmanagement.converter.CustomerConverter;
@@ -94,8 +95,9 @@ public class CustomerService implements ICustomerService {
 
 	@Override
 	public Map<Long, String> findAllMapIdName() {
-		List<CustomerEntity> entities = customerRepository.findAll();
-		Map<Long, String> rs = new HashMap<>();
+		Sort sort = new Sort(Sort.Direction.ASC,"name");
+		List<CustomerEntity> entities = customerRepository.findAll(sort);
+		Map<Long, String> rs = new LinkedHashMap<>();
 		
 		for (CustomerEntity entity : entities) {
 			rs.put(entity.getId(), entity.getName());

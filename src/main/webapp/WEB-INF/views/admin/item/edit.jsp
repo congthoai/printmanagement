@@ -46,10 +46,20 @@
 							</div>
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">Sản phẩm</label>
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">Tên sản phẩm</label>
 								<div class="col-sm-9">
 									<form:input path="name" cssClass="col-xs-10 col-sm-5" />
 								</div>
+							</div>
+							
+							<div class="form-group">
+								  <label for="typeId" class="col-sm-3 control-label no-padding-right">Loại sản phẩm</label>
+								  <div class="col-sm-9">
+								  	 <form:select path="itemtypeid" id="itemtypeid" cssClass="col-xs-10 col-sm-5">
+								  	 	<form:option value="" label="-- Chọn loại --"/>
+								  	 	<form:options items="${itemtypes}"/>
+								  	 </form:select>
+								  </div>
 							</div>
 							
 							<form:hidden path="id" id="newId" />

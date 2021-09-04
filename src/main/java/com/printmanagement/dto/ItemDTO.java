@@ -6,7 +6,8 @@ public class ItemDTO extends AbstractDTO<ItemDTO> {
 	private String name;
 	private String code;
 	private List<PriceListDTO> pricelists;
-	
+	private Long itemtypeid;
+	private ItemTypeDTO itemtype;
 	
 	
 	public List<PriceListDTO> getPricelists() {
@@ -27,4 +28,19 @@ public class ItemDTO extends AbstractDTO<ItemDTO> {
 	public void setCode(String code) {
 		this.code = code;
 	}
+	
+	public ItemTypeDTO getItemtype() {
+		return itemtype;
+	}
+	public void setItemtype(ItemTypeDTO itemtype) {
+		this.itemtype = itemtype;
+	}
+	public Long getItemtypeid() {
+		return itemtypeid;
+	}
+	public void setItemtypeid(Long itemtypeid) {
+		this.itemtypeid = itemtypeid;
+	}
+	
+	
 }

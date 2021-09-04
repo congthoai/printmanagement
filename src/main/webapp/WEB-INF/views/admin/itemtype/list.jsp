@@ -1,7 +1,7 @@
 <%@include file="/common/taglib.jsp"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<c:url var="costAPI" value="/api/cost"/>
-<c:url var="costURL" value="/quan-tri/chi-phi/danh-sach"/>
+<c:url var="itemtypeAPI" value="/api/itemtype"/>
+<c:url var="itemtypeURL" value="/quan-tri/loai-san-pham/danh-sach"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
@@ -12,7 +12,7 @@
 
 	<body>
 		<div class="main-content">
-		<form:form id="formSubmit" method="get" modelAttribute="model">
+		<form action="<c:url value='/quan-tri/loai-san-pham/danh-sach?/page=${model.page }&limit=${model.limit }'/>" id="formSubmit" method="get">
 			
 				<div class="main-content-inner">
 					<div class="breadcrumbs ace-save-state" id="breadcrumbs">
@@ -34,25 +34,12 @@
 								</c:if>
 								<div class="widget-box table-filter">
 									<div class="table-btn-controls">
-										<div class="pull-left tableTools-container"><br>
-											<div class="col-xs-10">
-												<form:input id="isFilter" type="hidden" path="isFilter"/>
-												<form:input id="startDate" type="text" path="startDate" placeholder="  Từ ngày ..." cssClass="datepk" style="width: 45%;"/>
-												&nbsp - &nbsp
-												<form:input id="endDate" type="text" path="endDate" placeholder="  Đến ngày ..." cssClass="datepk" style="width: 45%;"/>
-											</div>
-											<div class="col-md-2 pull-right">
-												<button id="btnFillter" type="submit" class="dt-button buttons-html5 btn btn-white btn-primary btn-bold">
-													 <span> <i class="fa fa-search pink"></i> </span>
-												</button>
-											</div>
-										</div>
 										<div class="pull-right tableTools-container">
 											<div class="dt-buttons btn-overlap btn-group">
-												<c:url var="createcostURL" value="/quan-tri/chi-phi/chinh-sua"/>
+												<c:url var="createitemtypeURL" value="/quan-tri/loai-san-pham/chinh-sua"/>
 												<a flag="info"
 												   class="dt-button buttons-colvis btn btn-white btn-primary btn-bold" data-toggle="tooltip"
-												   title='Thêm bài viết' href='${createcostURL}'>
+												   title='Thêm bài viết' href='${createitemtypeURL}'>
 															<span>
 																<i class="fa fa-plus-circle bigger-110 purple"></i>
 															</span>
@@ -74,13 +61,8 @@
 												<thead>
 													<tr>
 														<th><input type="checkbox" id="checkAll"></th>
-														<th>Mã chi phí</th>
-														<th>Ngày</th>
-														<th>Tên hàng</th>
-														<th>ĐVT</th>
-														<th>Số lượng</th>
-														<th>Đơn giá</th>
-														<th>Thành tiền</th>
+														<th>Mã loại sản phẩm</th>
+														<th>Tên loại sản phẩm</th>
 														<th>Thao tác</th>
 													</tr>
 												</thead>
@@ -89,28 +71,19 @@
 														<tr>
 															<td><input type="checkbox" id="checkbox_${item.id}" value="${item.id}"></td>
 															<td>${item.code}</td>
-															<td><fmt:formatDate pattern = "dd/MM/yyyy hh:mm:ss" value = "${item.costDate}" /></td>
 															<td>${item.name}</td>
-															<td>${item.unit}</td>
-															<td>${item.quantity}</td>
-															<td><fmt:formatNumber type="number" groupingUsed="true" value="${item.price}"/> ₫</td>
-															<td><fmt:formatNumber type="number" groupingUsed="true" value="${item.total}"/> ₫</td>
 															<td>
-																<c:url var="updatecostURL" value="/quan-tri/chi-phi/chinh-sua">
+																<c:url var="updateitemtypeURL" value="/quan-tri/loai-san-pham/chinh-sua">
 																	<c:param name="id" value="${item.id}"/>															
 																</c:url>																
 																<a class="btn btn-sm btn-primary btn-edit" data-toggle="tooltip"
-																   title="Cập nhật bài viết" href='${updatecostURL}'><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+																   title="Cập nhật bài viết" href='${updateitemtypeURL}'><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 																</a>
 																<button value="${item.id}" class="btn btn-xs btn-danger"><i class="ace-icon fa fa-trash-o bigger-120"></i>
 																</button>
 															</td>
 														</tr>
 													</c:forEach>
-														<tr style="border:0; background:yellow">
-															<td colspan = 7 style="border:0">Tổng tất cả:</td>
-															<td colspan = 2><fmt:formatNumber type="number" groupingUsed="true" value="${model.totalAll}"/> ₫</td>
-														</tr>
 												</tbody>
 											</table>
 											<ul class="pagination" id="pagination"></ul>
@@ -123,7 +96,7 @@
 						</div>
 					</div>
 				</div>
-		</form:form>
+		</form>
 		</div>
 		<!-- /.main-content -->
 		<script>
@@ -167,44 +140,19 @@
 			function deleteNew(data) {
 				$
 						.ajax({
-							url : '${costAPI}',
+							url : '${itemtypeAPI}',
 							type : 'DELETE',
 							contentType : 'application/json',
 							data : JSON.stringify(data),
 							success : function(result) {
-								window.location.href = "${costURL}?message=delete_success";
+								window.location.href = "${itemtypeURL}?message=delete_success";
 							},
 							error : function(error) {
-								window.location.href = "${costURL}?message=error_system";
+								window.location.href = "${itemtypeURL}?message=error_system";
 							}
 						});
 			}
-			
-			$('.datepk').datepicker({
-				dateFormat: "dd/mm/yy"
-			});			
-			
-			if($("#startDate").val() != "") {
-				$("#startDate").datepicker("setDate", new Date($("#startDate").val()));
-			} 
-			
-			if($("#endDate").val() != "") {
-				$("#endDate").datepicker("setDate", new Date($("#endDate").val()));
-			} 
-			
- 			$('#formSubmit').submit(function () {
-				let startDate = $("#startDate").val().replace( /(\d{2})\/(\d{2})\/(\d{4})/, "$3/$2/$1");
-				let endDate = $("#endDate").val().replace( /(\d{2})\/(\d{2})\/(\d{4})/, "$3/$2/$1");
-				$("#startDate").val(startDate);
-				$("#endDate").val(endDate);
-			}); 
-			
-			$("#btnFillter").click(function () {
-				$("#isFilter").val(1);
-				$('#formSubmit').submit();
-			});
-			
-			$(".cong-no").addClass("open");
+			$(".danh-muc").addClass("open");
 		</script>
 	</body>
 	</html>

@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
-<c:url var="materialURL" value="/quan-tri/vat-tu/danh-sach" />
-<c:url var="editmaterialURL" value="/quan-tri/vat-tu/chinh-sua" />
-<c:url var="materialAPI" value="/api/material" />
+<c:url var="materialtypeURL" value="/quan-tri/loai-vat-tu/danh-sach" />
+<c:url var="editmaterialtypeURL" value="/quan-tri/loai-vat-tu/chinh-sua" />
+<c:url var="materialtypeAPI" value="/api/materialtype" />
 <html>
 <head>
 <title>Chỉnh sửa bài viết</title>
@@ -16,7 +16,7 @@
 					<li><i class="ace-icon fa fa-home home-icon"></i> <a href="<c:url value='/quan-tri/trang-chu'/>">Trang quản trị</a>
 					</li>
 
-					<li><a href="${materialURL}?">Danh sách</a></li>
+					<li><a href="${materialtypeURL}?">Danh sách</a></li>
 					<li class="active">Chi tiết</li>
 				</ul>
 				<!-- /.breadcrumb -->
@@ -28,42 +28,17 @@
 							<div class="alert alert-${alert}">${message}</div>
 						</c:if>
 						<form:form class="form-horizontal" role="form" id="formSubmit" modelAttribute="model">
-							
 							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">Mã vật tư</label>
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">Mã loại vật tư</label>
 								<div class="col-sm-9">
 									<form:input path="code" cssClass="col-xs-10 col-sm-5" readonly="true"/>
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">Tên vật tư</label>
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">Loại vật tư</label>
 								<div class="col-sm-9">
 									<form:input path="name" cssClass="col-xs-10 col-sm-5" />
-								</div>
-							</div>
-							
-							<div class="form-group">
-								  <label for="typeId" class="col-sm-3 control-label no-padding-right">Loại vật tư</label>
-								  <div class="col-sm-9">
-								  	 <form:select path="materialtypeid" id="materialtypeid" cssClass="col-xs-10 col-sm-5">
-								  	 	<form:option value="" label="-- Chọn loại --"/>
-								  	 	<form:options items="${materialtypes}"/>
-								  	 </form:select>
-								  </div>
-							</div>
-							
-							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">Khổ</label>
-								<div class="col-sm-9">
-									<form:input path="size" cssClass="col-xs-10 col-sm-5" />
-								</div>
-							</div>
-							
-							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">Chiều dài</label>
-								<div class="col-sm-9">
-									<form:input path="width" cssClass="col-xs-10 col-sm-5" />
 								</div>
 							</div>
 							
@@ -98,6 +73,11 @@
 
 	<script>
 		$('#btnAddOrUpdateNew').click(function(e) {
+			val = $("#name").val().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+				.replace(/ /g, '-')
+				.replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase();   
+			$("#code").val(val);
+			
 			e.preventDefault();
 			var data = {};
 			var formData = $('#formSubmit').serializeArray();
@@ -114,38 +94,46 @@
 
 		function addNew(data) {
 			$.ajax({
-						url : '${materialAPI}',
+						url : '${materialtypeAPI}',
 						type : 'POST',
 						contentType : 'application/json',
 						data : JSON.stringify(data),
 						dataType : 'json',
 						success : function(result) {
-							window.location.href = "${editmaterialURL}?id="
+							window.location.href = "${editmaterialtypeURL}?id="
 									+ result.id + "&message=insert_success";
 						},
 						error : function(error) {
-							window.location.href = "${materialURL}?message=error_system";
+							window.location.href = "${materialtypeURL}?message=error_system";
 						}
 					});
 		}
 
 		function updateNew(data) {
 			$.ajax({
-				url : '${materialAPI}',
+				url : '${materialtypeAPI}',
 				type : 'PUT',
 				contentType : 'application/json',
 				data : JSON.stringify(data),
 				dataType : 'json',
 				success : function(result) {
-					window.location.href = "${editmaterialURL}?id=" + result.id
+					window.location.href = "${editmaterialtypeURL}?id=" + result.id
 							+ "&message=update_success";
 				},
 				error : function(error) {
-					window.location.href =  "${materialURL}?message=error_system";
+					window.location.href =  "${materialtypeURL}?message=error_system";
 				}
 			});
 		}
 		$(".danh-muc").addClass("open");
+		
+		var field = document.getElementById("name")
+		field.onkeydown = function(evt){
+		    val = $("#name").val().normalize('NFD')
+		            .replace(/[\u0300-\u036f]/g, '').replace(/ /g, '-')
+		            .replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase();   
+		    $("#code").val(val); 
+		}
 	</script>
 </body>
 </html>

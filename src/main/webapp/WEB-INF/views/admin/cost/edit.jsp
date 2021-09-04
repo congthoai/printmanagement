@@ -162,7 +162,7 @@
 		$(".danh-muc").addClass("open");
 		
 		$('#costDate').datetimepicker({
-		    dateFormat: "dd/mm/yy",
+			dateFormat: "dd/mm/yy",
 		    timeFormat:  "hh:mm:ss"
 		});
 		

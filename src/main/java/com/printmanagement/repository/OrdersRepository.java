@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.printmanagement.entity.OrdersEntity;
 
@@ -24,6 +25,33 @@ public interface OrdersRepository extends JpaRepository<OrdersEntity, Long> {
 			+ "	AND status = 'paid' "
 			+ "	GROUP BY DAYOFWEEK(paymentdate) ORDER BY dayofweek ASC  ", nativeQuery = true)
 	List<Object[]> reportRevenueInWeek();
+	
+	@Query(value = "SELECT DATE_FORMAT(paymentdate, '%Y-%M-%d') as dayofmonth, sum(paid) revenue,  count(*) as count from  orders "
+			+ "where paymentdate >= (LAST_DAY(:datee - INTERVAL 1 MONTH) + INTERVAL 1 DAY) "
+			+ "	AND paymentdate <= LAST_DAY(:datee) "
+			+ "	AND status = 'paid' "
+			+ "	GROUP BY DAYOFMONTH(paymentdate) ORDER BY  length(dayofmonth),dayofmonth ASC  ", nativeQuery = true)
+	List<Object[]> reportRevenueInMonth(@Param("datee") Date datee);
+	
+	@Query(value = "SELECT DATE_FORMAT(orderdate, '%Y-%M-%d') as dayofmonth, sum(total) saleamount,  count(*) as count from  orders "
+			+ "where orderdate >= (LAST_DAY(:datee - INTERVAL 1 MONTH) + INTERVAL 1 DAY) "
+			+ "	AND orderdate <= LAST_DAY(:datee) "
+			+ "	GROUP BY DAYOFMONTH(orderdate) ORDER BY  length(dayofmonth),dayofmonth ASC  ", nativeQuery = true)
+	List<Object[]> reportSaleAmountInMonth(@Param("datee") Date datee);
+	
+	@Query(value = "SELECT itemtype.name, sum(area) FROM  orders, item, itemtype "
+			+ "WHERE orders.item_id = item.id and item.itemtype_id = itemtype.id "
+			+ "AND orderdate >= (LAST_DAY(:datee - INTERVAL 1 MONTH) + INTERVAL 1 DAY) "
+			+ "AND orderdate <= LAST_DAY(:datee) "
+			+ "GROUP BY itemtype.id  ", nativeQuery = true)
+	List<Object[]> reportAreaInMonthByItemType(@Param("datee") Date datee);
+	
+	@Query(value = "SELECT materialtype.name, sum(area) FROM  purchasematerial p, purchasematerialdetail pd, material, materialtype "
+			+ "WHERE p.id = pd.purchasematerial_id AND pd.material_id = material.id AND material.materialtype_id = materialtype.id "
+			+ "AND purchasedate >= (LAST_DAY(:datee - INTERVAL 1 MONTH) + INTERVAL 1 DAY) "
+			+ "AND purchasedate <= LAST_DAY(:datee) "
+			+ "GROUP BY materialtype.id ", nativeQuery = true)
+	List<Object[]> reportAreaInMonthByMaterialType(@Param("datee") Date datee);
 	
 	@Query(value = "SELECT status, count(*) as count from  orders \r\n"
 			+ "where orderdate >= ADDDATE(CURDATE(), 0 - WEEKDay(CURDATE())) \r\n"

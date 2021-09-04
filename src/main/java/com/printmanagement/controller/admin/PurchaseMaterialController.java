@@ -47,7 +47,8 @@ public class PurchaseMaterialController {
 		model.setIsFilter((isFilter != null && isFilter == 1) ? isFilter : 0);
 		if(model.getIsFilter() != 1) {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-			startDate = LocalDate.now().withDayOfMonth(1).format(formatter);
+			//startDate = LocalDate.now().withDayOfMonth(1).format(formatter);
+			startDate = "";
 			endDate = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).format(formatter);
 		}
 		

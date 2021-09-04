@@ -61,8 +61,8 @@
 												<thead>
 													<tr>
 														<th><input type="checkbox" id="checkAll"></th>
-														<th>Mã sản phẩm</th>
-														<th>Tên sản phẩm</th>
+														<th>Mã khách hàng</th>
+														<th>Tên khách hàng</th>
 														<th>Thao tác</th>
 													</tr>
 												</thead>

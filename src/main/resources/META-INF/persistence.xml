@@ -9,9 +9,11 @@
 		<class>com.printmanagement.entity.CustomerEntity</class>
 		<class>com.printmanagement.entity.CustomerTypeEntity</class>
 		<class>com.printmanagement.entity.ItemEntity</class>
+		<class>com.printmanagement.entity.ItemTypeEntity</class>
 		<class>com.printmanagement.entity.PriceListEntity</class>
 		<class>com.printmanagement.entity.OrdersEntity</class>
 		<class>com.printmanagement.entity.MaterialEntity</class>
+		<class>com.printmanagement.entity.MaterialTypeEntity</class>
 		<class>com.printmanagement.entity.PurchaseMaterialEntity</class>
 		<class>com.printmanagement.entity.PurchaseMaterialDetailEntity</class>
 		<class>com.printmanagement.entity.CostEntity</class>

@@ -1,18 +1,21 @@
 package com.printmanagement.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.printmanagement.converter.MaterialConverter;
 import com.printmanagement.dto.MaterialDTO;
 import com.printmanagement.entity.MaterialEntity;
+import com.printmanagement.entity.MaterialTypeEntity;
 import com.printmanagement.repository.MaterialRepository;
+import com.printmanagement.repository.MaterialTypeRepository;
 import com.printmanagement.service.IMaterialService;
 
 @Service
@@ -21,10 +24,13 @@ public class MaterialService implements IMaterialService {
 	private MaterialRepository materialRepository;
 	@Autowired
 	private MaterialConverter materialConverter;
+	@Autowired
+	private MaterialTypeRepository materialTypeRepository;
 
 	@Override
 	public MaterialDTO save(MaterialDTO dto) {
 		MaterialEntity materialEntity = new MaterialEntity();
+		MaterialTypeEntity materialType = materialTypeRepository.findOne(dto.getMaterialtypeid());
 
 		if (dto.getId() != null) {
 			MaterialEntity old = materialRepository.findOne(dto.getId());
@@ -32,7 +38,8 @@ public class MaterialService implements IMaterialService {
 		} else {
 			materialEntity = materialConverter.toEntity(dto);
 		}
-
+		
+		materialEntity.setMaterialtype(materialType);
 		return materialConverter.toDto(materialRepository.save(materialEntity));
 	}
 
@@ -76,8 +83,9 @@ public class MaterialService implements IMaterialService {
 
 	@Override
 	public Map<Long, String> findAllMapIdName() {
-		List<MaterialEntity> entities = materialRepository.findAll();
-		Map<Long, String> rs = new HashMap<>();
+		Sort sort = new Sort(Sort.Direction.ASC,"name");
+		List<MaterialEntity> entities = materialRepository.findAll(sort);
+		Map<Long, String> rs = new LinkedHashMap<>();
 		
 		for (MaterialEntity entity : entities) {
 			rs.put(entity.getId(), entity.getName());

@@ -50,7 +50,7 @@ public class JPAConfig {
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		dataSource.setUrl("jdbc:mysql://localhost/printmanagement");
 		dataSource.setUsername("root");
-		dataSource.setPassword("root");
+		dataSource.setPassword("12345678Aa@");
 		return dataSource;
 	}
 	

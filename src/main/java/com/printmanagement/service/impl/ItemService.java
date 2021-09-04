@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import com.printmanagement.converter.ItemConverter;
 import com.printmanagement.dto.ItemDTO;
 import com.printmanagement.entity.ItemEntity;
+import com.printmanagement.entity.ItemTypeEntity;
 import com.printmanagement.repository.ItemRepository;
+import com.printmanagement.repository.ItemTypeRepository;
 import com.printmanagement.service.IItemService;
 
 @Service
@@ -21,10 +23,13 @@ public class ItemService implements IItemService {
 	private ItemRepository itemRepository;
 	@Autowired
 	private ItemConverter itemConverter;
+	@Autowired
+	private ItemTypeRepository itemTypeRepository;
 	
 	@Override
 	public ItemDTO save(ItemDTO dto) {
 		ItemEntity itemEntity = new ItemEntity();
+		ItemTypeEntity itemType = itemTypeRepository.findOne(dto.getItemtypeid());
 
 		if (dto.getId() != null) {
 			ItemEntity old = itemRepository.findOne(dto.getId());
@@ -33,6 +38,7 @@ public class ItemService implements IItemService {
 			itemEntity = itemConverter.toEntity(dto);
 		}
 
+		itemEntity.setItemtype(itemType);
 		return itemConverter.toDto(itemRepository.save(itemEntity));
 	}
 	

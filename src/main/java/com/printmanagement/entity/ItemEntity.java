@@ -5,12 +5,20 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="item")
 public class ItemEntity extends BaseEntity {
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "itemtype_id")
+    private ItemTypeEntity itemtype;
+	
 	@OneToMany(mappedBy = "itemm")
 	private List<PriceListEntity> pricelists = new ArrayList<>();
 	
@@ -53,6 +61,14 @@ public class ItemEntity extends BaseEntity {
 
 	public void setOrders(List<OrdersEntity> orders) {
 		this.orders = orders;
+	}
+
+	public ItemTypeEntity getItemtype() {
+		return itemtype;
+	}
+
+	public void setItemtype(ItemTypeEntity itemtype) {
+		this.itemtype = itemtype;
 	}
 	
 	

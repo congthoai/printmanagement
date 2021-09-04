@@ -79,8 +79,4 @@ public class CostDTO extends AbstractDTO<CostDTO>{
 	public void setTotalAll(Long totalAll) {
 		this.totalAll = totalAll;
 	}
-	
-	
-	
-	
 }

@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.printmanagement.dto.ItemDTO;
 import com.printmanagement.service.IItemService;
+import com.printmanagement.service.IItemTypeService;
 import com.printmanagement.service.IPriceListService;
 import com.printmanagement.util.MessageUtil;
 
@@ -24,6 +25,8 @@ public class ItemController {
 	private IItemService itemService;
 	@Autowired
 	private IPriceListService priceListService;
+	@Autowired
+	private IItemTypeService itemTypeService;
 	
 	@RequestMapping(value= "/quan-tri/san-pham/danh-sach", method = RequestMethod.GET)
 	public ModelAndView showList(@RequestParam(value="page", required = false) Integer page,
@@ -61,6 +64,7 @@ public class ItemController {
 			mav.addObject("alert", message.get("alert"));
 		}
 
+		mav.addObject("itemtypes", itemTypeService.findAllMapIdName());
 		mav.addObject("model", model);
 		return mav;
 	}

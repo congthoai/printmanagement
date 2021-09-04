@@ -5,12 +5,19 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="material")
 public class MaterialEntity extends BaseEntity {
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "materialtype_id")
+    private MaterialTypeEntity materialtype;
 	
 	@OneToMany(mappedBy = "material")
 	private List<PurchaseMaterialDetailEntity> purchasematerialdetails = new ArrayList<>();
@@ -65,6 +72,14 @@ public class MaterialEntity extends BaseEntity {
 
 	public void setWidth(Float width) {
 		this.width = width;
+	}
+
+	public MaterialTypeEntity getMaterialtype() {
+		return materialtype;
+	}
+
+	public void setMaterialtype(MaterialTypeEntity materialtype) {
+		this.materialtype = materialtype;
 	}
 	
 	

@@ -435,7 +435,7 @@
 			$("input[data-type='currency']").keyup();
 			$(".cong-no").addClass("open");
 			$('.datepk').datepicker({
-			    dateFormat: 'dd/mm/yy'
+				dateFormat: "dd/mm/yy"
 			});
 			
 			if($("#startDate").val() != "") {

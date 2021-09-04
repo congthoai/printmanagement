@@ -47,6 +47,8 @@ public class HomeController {
 		mav.addObject("orderInDay", orderInDay);
 		mav.addObject("revenueInDay", revenueInDay);
 		mav.addObject("revenueInWeek", DataObjectToJson(orderRepository.reportRevenueInWeek()));
+		//mav.addObject("revenueInMonth", DataObjectToJson(orderRepository.reportRevenueInMonth()));
+		//mav.addObject("saleAmountInMonth", DataObjectToJson(orderRepository.reportSaleAmountInMonth()));
 		mav.addObject("orderCountByStatus", DataObjectToJson(orderRepository.reportOrderCountByStatusInWeek()));
 		mav.addObject("today", dateFormat.format(date));
 		return mav;

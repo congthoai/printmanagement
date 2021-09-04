@@ -17,6 +17,7 @@ public class CostConverter {
 		dto.setUnit(entity.getUnit());
 		dto.setQuantity(entity.getQuantity());
 		dto.setPrice(entity.getPrice());
+		dto.setType(entity.getType());
 		return dto;
 	}
 	
@@ -29,6 +30,7 @@ public class CostConverter {
 		entity.setUnit(dto.getUnit());
 		entity.setQuantity(dto.getQuantity());
 		entity.setPrice(dto.getPrice());
+		entity.setType(dto.getType());
 		return entity;
 	}
 	
@@ -40,6 +42,7 @@ public class CostConverter {
 		entity.setUnit(dto.getUnit());
 		entity.setQuantity(dto.getQuantity());
 		entity.setPrice(dto.getPrice());
+		entity.setType(dto.getType());
 		return entity;
 	}
 }

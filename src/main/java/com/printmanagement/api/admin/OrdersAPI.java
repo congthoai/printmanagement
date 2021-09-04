@@ -1,6 +1,9 @@
 package com.printmanagement.api.admin;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.printmanagement.dto.OrdersDTO;
+import com.printmanagement.repository.OrdersRepository;
 import com.printmanagement.service.IOrdersService;
 
 @RestController(value="orderApiOfAdmin")
@@ -20,6 +24,8 @@ public class OrdersAPI {
 	
 	@Autowired
 	private IOrdersService orderService;
+	@Autowired
+	private OrdersRepository orderRepository;
 	
 	@PostMapping(value= {"/api/order"})
 	public OrdersDTO createOrder(@RequestBody OrdersDTO ordersDTO) {		
@@ -57,4 +63,41 @@ public class OrdersAPI {
 	 * 
 	 * return orderRepository.reportRevenueInWeek(); }
 	 */
+	
+	
+	@GetMapping(value = { "ajax/api/order/reportrevenueinmonth/{dateStr}" })
+	public List<Object[]> reportRevenueInMonth(@PathVariable(required = false) String dateStr) throws ParseException {
+		Date date = new Date();
+		if(dateStr != null) {
+			date = new SimpleDateFormat("yyyy-MM").parse(dateStr);
+		}
+		return orderRepository.reportRevenueInMonth(date);
+	}
+	
+	@GetMapping(value = { "ajax/api/order/reportsaleamountinMonth/{dateStr}" })
+	public List<Object[]> reportSaleAmountInMonth(@PathVariable(required = false) String dateStr) throws ParseException {
+		Date date = new Date();
+		if(dateStr != null) {
+			date = new SimpleDateFormat("yyyy-MM").parse(dateStr);
+		}
+		return orderRepository.reportSaleAmountInMonth(date);
+	}
+	
+	@GetMapping(value = { "ajax/api/order/reportareainmonthbyitemtype/{dateStr}" })
+	public List<Object[]> reportAreaInMonthByItemType(@PathVariable(required = false) String dateStr) throws ParseException {
+		Date date = new Date();
+		if(dateStr != null) {
+			date = new SimpleDateFormat("yyyy-MM").parse(dateStr);
+		}
+		return orderRepository.reportAreaInMonthByItemType(date);
+	}
+	
+	@GetMapping(value = { "ajax/api/order/reportareainmonthbymaterialtype/{dateStr}" })
+	public List<Object[]> reportAreaInMonthByMaterialType(@PathVariable(required = false) String dateStr) throws ParseException {
+		Date date = new Date();
+		if(dateStr != null) {
+			date = new SimpleDateFormat("yyyy-MM").parse(dateStr);
+		}
+		return orderRepository.reportAreaInMonthByMaterialType(date);
+	}
 }

@@ -8,6 +8,8 @@ public class MaterialDTO extends AbstractDTO<MaterialDTO> {
 	private Float size;
 	private Float width; 
 	private List<PurchaseMaterialDetailDTO> purchasematerialdetails;
+	private Long materialtypeid;
+	private MaterialTypeDTO materialtype;
 	
 	
 	public String getCode() {
@@ -39,6 +41,18 @@ public class MaterialDTO extends AbstractDTO<MaterialDTO> {
 	}
 	public void setPurchasematerialdetails(List<PurchaseMaterialDetailDTO> purchasematerialdetails) {
 		this.purchasematerialdetails = purchasematerialdetails;
+	}
+	public Long getMaterialtypeid() {
+		return materialtypeid;
+	}
+	public void setMaterialtypeid(Long materialtypeid) {
+		this.materialtypeid = materialtypeid;
+	}
+	public MaterialTypeDTO getMaterialtype() {
+		return materialtype;
+	}
+	public void setMaterialtype(MaterialTypeDTO materialtype) {
+		this.materialtype = materialtype;
 	}
 
 	

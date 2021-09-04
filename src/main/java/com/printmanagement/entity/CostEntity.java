@@ -30,6 +30,9 @@ public class CostEntity extends BaseEntity {
 	
 	@Column(name = "total")
 	private Long total;
+	
+	@Column(name = "type")
+	private String type;
 
 	public String getName() {
 		return name;
@@ -86,6 +89,13 @@ public class CostEntity extends BaseEntity {
 	public void setTotal(Long total) {
 		this.total = total;
 	}
-	
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 	
 }

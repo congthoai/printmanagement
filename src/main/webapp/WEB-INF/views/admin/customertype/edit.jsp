@@ -73,6 +73,11 @@
 
 	<script>
 		$('#btnAddOrUpdateNew').click(function(e) {
+			val = $("#name").val().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+				.replace(/ /g, '-')
+				.replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase();   
+			$("#code").val(val);
+			
 			e.preventDefault();
 			var data = {};
 			var formData = $('#formSubmit').serializeArray();
@@ -121,6 +126,15 @@
 			});
 		}
 		$(".danh-muc").addClass("open");
+		
+		var field = document.getElementById("name")
+		var val = "";
+		field.onkeydown = function(evt){
+		    val = $("#name").val().normalize('NFD')
+		            .replace(/[\u0300-\u036f]/g, '').replace(/ /g, '-')
+		            .replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase();   
+		    $("#code").val(val); 
+		}
 	</script>
 </body>
 </html>

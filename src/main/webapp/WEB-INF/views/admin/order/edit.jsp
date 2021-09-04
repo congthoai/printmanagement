@@ -315,7 +315,7 @@
 	}
 	
 	$('.datepk').datepicker({
-	    dateFormat: 'dd/mm/yy'
+		dateFormat: "dd/mm/yy"
 	});
 	
 	if($('#newId').val() == "") {
