@@ -41,6 +41,21 @@ public class UserConverter {
 		return result;
 	}
 	
+	public UserDTO toDtoBasicInfo(UserEntity entity) {
+		UserDTO result = new UserDTO();
+		List<RoleDTO> roles = new ArrayList<>();
+		result.setId(entity.getId());
+		result.setUserName(entity.getUserName());
+		result.setFullName(entity.getFullName());
+		
+		for (RoleEntity role : entity.getRoles()) {
+			roles.add(roleConverter.toDto(role));
+		}
+		
+		result.setRoles(roles);
+		return result;
+	}
+	
 	public UserEntity toEntity(UserDTO dto) {
 		UserEntity result = new UserEntity();
 		result.setFullName(dto.getFullName());

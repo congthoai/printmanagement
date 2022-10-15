@@ -44,6 +44,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 			url = "/quan-tri/trang-chu";
 		} else if (isUser(roles)) {
 			url = "/quan-tri/don-hang/danh-sach";
+		} else if (isStaff(roles)){
+			url = "/quan-tri/quan-ly-in/danh-sach";
 		}
 		return url;
 	}
@@ -57,6 +59,13 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 	
 	private boolean isUser(List<String> roles) {
 		if (roles.contains("USER")) {
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean isStaff(List<String> roles) {
+		if (roles.contains("STAFF") || roles.contains("DESIGNER")) {
 			return true;
 		}
 		return false;

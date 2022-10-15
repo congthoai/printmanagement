@@ -216,6 +216,22 @@ public class OrdersService implements IOrdersService {
 		}
 		return rs;
 	}
+	
+	@Override
+	public int countByFilter(Long customerId, String status, String content, String startDate,
+			String endDate, String startPaymentDate, String endPaymentDate, Pageable pageable) {
+		int rs = 0;
+		List<Object[]> entites = orderRepository.countByFilter(customerId, status, content, startDate, endDate,
+				startPaymentDate, endPaymentDate, pageable);
+		for (Object entity : entites) {
+			try {
+				rs = ((BigInteger) entity).intValue();
+			} catch(Exception ex) {
+				System.out.println(ex.getMessage());
+			}
+		}
+		return rs;
+	}
 
 	public String generateOrderCode() {
 		Date date = Calendar.getInstance().getTime();

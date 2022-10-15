@@ -97,7 +97,7 @@ public class OrdersController {
 			startPaymentDate = null;
 		}
 		model.setListResult(orderService.findByFilter(customerid, status, content, startDate, endDate, startPaymentDate, endPaymentDate, pageable));
-		model.setTotalItem(orderService.findByFilter(customerid, status, content, startDate, endDate, startPaymentDate, endPaymentDate,  null).size());
+		model.setTotalItem(orderService.countByFilter(customerid, status, content, startDate, endDate, startPaymentDate, endPaymentDate,  null));
 		model.setTotalPage((int) Math.ceil((double) model.getTotalItem() / model.getLimit()));
 		if(request.getParameter("message") != null) {
 			Map<String, String> message = MessageUtil.getInstance().getMessage(request.getParameter("message"));

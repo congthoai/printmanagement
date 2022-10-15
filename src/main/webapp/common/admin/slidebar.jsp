@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<c:set var="roleIs" value="${SecurityUtils.getPrincipal().getUser().getRoleCode()}" scope="page" />
 
 
 <div id="sidebar" class="sidebar                  responsive">
@@ -39,13 +40,14 @@
       </a>
       <b class="arrow"></b>
     </li>
+    <c:if test="${roleIs == 'ADMIN' || roleIs == 'USER'}">
     <li class="">
       <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-cube"></i>
         <span class="menu-text">DANH MỤC</span>
         <b class="arrow fa fa-angle-down"></b>
       </a>
-      <b class="arrow"></b>
+      <b class="arrow"></b> 
       <ul class="submenu">
         <li class="">
           <a href="
@@ -91,7 +93,7 @@
         </li>
       </ul>
     </li>
-   
+   </c:if>
       <li class="cong-no">
         <a href="#" class="dropdown-toggle">
           <i class="menu-icon fa fa-pencil-square-o"></i>
@@ -108,6 +110,13 @@
           </li>
           <li class="">
             <a href="
+							<c:url value='/quan-tri/quan-ly-in/danh-sach'/>">
+              <i class="menu-icon fa fa-caret-right"></i> Quản Lý In </a>
+            <b class="arrow"></b>
+          </li>
+          <c:if test="${roleIs == 'ADMIN'}">
+          <li class="">
+            <a href="
 							<c:url value='/quan-tri/chi-phi/danh-sach'/>">
               <i class="menu-icon fa fa-caret-right"></i> Chi Phí </a>
             <b class="arrow"></b>
@@ -118,10 +127,11 @@
               <i class="menu-icon fa fa-caret-right"></i> Nhập Vật Tư </a>
             <b class="arrow"></b>
           </li>
+          </c:if>
         </ul>
       </li>
 
-   
+   <c:if test="${roleIs == 'ADMIN'}">
       <li class="bao-cao">
         <a href="#" class="dropdown-toggle">
           <i class="menu-icon fa fa-pie-chart"></i>
@@ -168,7 +178,7 @@
           </li>
         </ul>
       </li>
-
+	</c:if>
    
       <li>
         <a href="#" class="dropdown-toggle">

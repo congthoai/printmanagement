@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -20,6 +21,9 @@ public class OrdersEntity extends BaseEntity{
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
+	
+   @OneToOne(mappedBy = "orderr")
+    private OrderOfPrinterEntity orderOfPrinter;
 	
 	@Column(name = "code")
 	private String code;
@@ -85,6 +89,14 @@ public class OrdersEntity extends BaseEntity{
 
 	public void setCustomer(CustomerEntity customer) {
 		this.customer = customer;
+	}
+
+	public OrderOfPrinterEntity getOrderOfPrinter() {
+		return orderOfPrinter;
+	}
+
+	public void setOrderOfPrinter(OrderOfPrinterEntity orderOfPrinter) {
+		this.orderOfPrinter = orderOfPrinter;
 	}
 
 	public String getCode() {

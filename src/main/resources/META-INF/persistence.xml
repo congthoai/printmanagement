@@ -17,6 +17,8 @@
 		<class>com.printmanagement.entity.PurchaseMaterialEntity</class>
 		<class>com.printmanagement.entity.PurchaseMaterialDetailEntity</class>
 		<class>com.printmanagement.entity.CostEntity</class>
+		<class>com.printmanagement.entity.PrinterEntity</class>
+		<class>com.printmanagement.entity.OrderOfPrinterEntity</class>
 		<properties>
 
 			<property name="hibernate.show_sql" value="true" />

@@ -155,7 +155,7 @@
 					cancelButtonText : "Hủy bỏ",
 				}).then(
 						function(isConfirm) {
-							if (isConfirm) {
+							if (isConfirm.value) {
 								var ids = $('tbody input[type=checkbox]:checked').map(function() {
 											return $(this).val();
 											}).get();

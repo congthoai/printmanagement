@@ -22,4 +22,6 @@ public interface IOrdersService {
 	List<OrdersDTO> findByFilter(Long customerId, String status, String content, String startDate, String endDate, String startPaymentDate, String endPaymentDate, Pageable pageable);
 	List<OrdersDTO> findByFilter2(Long customerId, String status, String content, String startDate, String endDate, String startPaymentDate, String endPaymentDate, int page, int limit);
 	ReportBusinessPerformanceDTO reportBusinessPerformanceOrder(Date startDate, Date endDate);
+	int countByFilter(Long customerId, String status, String content, String startDate, String endDate, String startPaymentDate, String endPaymentDate, Pageable pageable);
+
 }

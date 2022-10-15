@@ -64,6 +64,8 @@ public class UserController {
 			{
 				put("ADMIN", "ADMIN");
 				put("USER", "USER");
+				put("DESIGNER", "DESIGNER");
+				put("STAFF", "STAFF");
 			}
 		});
 		

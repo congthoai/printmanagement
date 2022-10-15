@@ -23,7 +23,8 @@
 								<i class="ace-icon fa fa-home home-icon"></i>
 								<a href="<c:url value='/quan-tri/trang-chu'/>">Trang quản trị</a>
 							</li>
-							<li><a href="${orderURL}">Danh sách</a></li>
+							<li><a href="${orderURL}">Đơn hàng</a></li>
+							<li>Danh sách</li>
 						</ul>
 						<ul class="breadcrumb" style="float: right;">
 							<li>Sắp xếp:
@@ -303,7 +304,8 @@
 					cancelButtonText : "Hủy bỏ",
 				}).then(
 						function(isConfirm) {
-							if (isConfirm) {
+							console.log(isConfirm.value);
+							if (isConfirm.value) {
 								var ids = $('tbody input[type=checkbox]:checked').map(function() {
 											return $(this).val();
 											}).get();
@@ -346,7 +348,7 @@
 						cancelButtonText : "Hủy bỏ",
 					}).then(
 							function(isConfirm) {
-								if (isConfirm) {
+								if (isConfirm.value) {
 									var ids = $('tbody input[type=checkbox]:checked').map(function() {
 												return $(this).val();
 												}).get();

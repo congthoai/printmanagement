@@ -18,9 +18,10 @@
    		<intercept-url pattern="/api/purchasematerial/**" access="hasAnyRole('ADMIN')" />
    		<intercept-url pattern="/api/purchasematerialdetail/**" access="hasAnyRole('ADMIN')" />
    		<intercept-url pattern="/api/pricelist/**" access="hasAnyRole('ADMIN')" />
+   		<intercept-url pattern="/api/user/**" access="hasAnyRole('ADMIN')" />
    		<intercept-url pattern="/ajax/**" access="hasAnyRole('ADMIN')" />
    		
-    	<intercept-url pattern="/quan-tri/**" access="hasAnyRole('ADMIN', 'USER')" />
+    	<intercept-url pattern="/quan-tri/**" access="hasAnyRole('ADMIN', 'USER', 'STAFF', 'DESIGNER')" />
     	
     	<access-denied-handler error-page="/accessDenied" />
         <form-login  login-page="/dang-nhap"
