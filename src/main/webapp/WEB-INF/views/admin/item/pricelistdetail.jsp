@@ -80,7 +80,7 @@
 														<td>${model.name }</td>
 														<td>${pricelist.customertypeName }</td>
 														<td>
-															<input type="number" class="price-value-edit" value="${pricelist.price}"/>
+															<input type="text" class="price-value-edit" value="${pricelist.payoutPriceStr}"/>
 														</td>
 														<td>
 															<button class="btn btn-xs btn-primary btnSavePriceList"
@@ -113,11 +113,20 @@
 		
 		$(".btnSavePriceList").click(function () {
 			let price = $(this).parent().parent().find('.price-value-edit').val();
-			let href = '${editPriceURL}' + $(this).val() +"&price=" + price;
+			let regex = /^\d+(\.\d+)?:\d+(\.\d+)?(;\d+(\.\d+)?:\d+(\.\d+)?)*$/g;
+			if(!regex.test(price)) {
+				alert("sai định dạng: Area1:Price1;Area2:Price2;...;Area3:Price3");
+				return;
+			}
+			let href = '${editPriceURL}' + $(this).val() +"&payoutPrice=" + price;
 
 			$.get(href, function(data,status){
-	    		 location.reload();
-	    	});
+				// console.log(status);
+	    	}).fail(function() {
+	    	    alert( "Something wrong!" );
+	    	}).always(function() {
+	    		location.reload();
+	    	});;
 		});
 	
 		$(".danh-muc").addClass("open");

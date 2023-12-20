@@ -11,8 +11,8 @@ import com.printmanagement.entity.PriceListEntity;
 
 public interface PriceListRepository extends JpaRepository<PriceListEntity, Long> {
 	PriceListEntity findOneByCustomertypeeAndItemm(CustomerTypeEntity customertype, ItemEntity item);
-	
-	@Query(value = "SELECT pl.id, ctype.id as customer_id, ctype.name, item_id, price\r\n "
+
+	@Query(value = "SELECT pl.id, ctype.id as customer_id, ctype.name, item_id, price, payout_price\r\n "
 			+ " FROM customertype ctype LEFT JOIN pricelist pl \r\n "
 			+ " 	ON ( ctype.id = pl.customertype_id AND item_id = ?1) \r\n "
 			+ " ORDER BY ctype.id, pl.id DESC  ", nativeQuery = true)

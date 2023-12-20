@@ -19,7 +19,7 @@ import com.printmanagement.service.IItemService;
 import com.printmanagement.service.IPriceListService;
 import com.printmanagement.util.MessageUtil;
 
-@Controller(value="pricelistControllerOfAdmin")
+@Controller(value = "pricelistControllerOfAdmin")
 public class PriceListController {
 	@Autowired
 	private IPriceListService pricelistService;
@@ -27,19 +27,19 @@ public class PriceListController {
 	private ICustomerTypeService customertypeService;
 	@Autowired
 	private IItemService itemService;
-	
-	@RequestMapping(value= "/quan-tri/don-gia/danh-sach", method = RequestMethod.GET)
-	public ModelAndView showList(@RequestParam(value="page", required = false) Integer page,
-			@RequestParam(value="limit", required = false) Integer limit, HttpServletRequest request) {
+
+	@RequestMapping(value = "/quan-tri/don-gia/danh-sach", method = RequestMethod.GET)
+	public ModelAndView showList(@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "limit", required = false) Integer limit, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("admin/pricelist/list");
 		PriceListDTO model = new PriceListDTO();
 		model.setPage(page != null ? page : 1);
 		model.setLimit(limit != null ? limit : 10);
-		Pageable pageable = new PageRequest(model.getPage()-1, model.getLimit());
+		Pageable pageable = new PageRequest(model.getPage() - 1, model.getLimit());
 		model.setListResult(pricelistService.findAll(pageable));
 		model.setTotalItem(pricelistService.getTotalItem());
 		model.setTotalPage((int) Math.ceil((double) model.getTotalItem() / model.getLimit()));
-		if(request.getParameter("message") != null) {
+		if (request.getParameter("message") != null) {
 			Map<String, String> message = MessageUtil.getInstance().getMessage(request.getParameter("message"));
 			mav.addObject("message", message.get("message"));
 			mav.addObject("alert", message.get("alert"));
@@ -48,47 +48,51 @@ public class PriceListController {
 		mav.addObject("model", model);
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "/quan-tri/don-gia/chinh-sua", method = RequestMethod.GET)
-	public ModelAndView editPriceList(HttpServletRequest request, @RequestParam(value = "id", required = false) Long id) {
+	public ModelAndView editPriceList(HttpServletRequest request,
+			@RequestParam(value = "id", required = false) Long id) {
 		ModelAndView mav = new ModelAndView("admin/pricelist/edit");
 		PriceListDTO model = new PriceListDTO();
-		
-		if(id != null) {
+
+		if (id != null) {
 			model = pricelistService.findOne(id);
 		}
-		
-		if(request.getParameter("message") != null) {
+
+		if (request.getParameter("message") != null) {
 			Map<String, String> message = MessageUtil.getInstance().getMessage(request.getParameter("message"));
 			mav.addObject("message", message.get("message"));
 			mav.addObject("alert", message.get("alert"));
 		}
-		
+
 		mav.addObject("customertypes", customertypeService.findAllMapIdName());
 		mav.addObject("items", itemService.findAllMapIdName());
 		mav.addObject("model", model);
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "/quan-tri/don-gia/chinh-sua-nhanh", method = RequestMethod.GET)
 	public String quickEditPriceList(HttpServletRequest request, @RequestParam(value = "id", required = false) Long id,
 			@RequestParam(value = "itemid", required = false) Long itemid,
 			@RequestParam(value = "customertypeid", required = false) Long customertypeid,
-			@RequestParam(value = "price", required = false) Long price) {
+			@RequestParam(value = "payoutPrice", required = false) String payoutPrice) {
 
 		PriceListDTO model = new PriceListDTO();
-		
-		if(id != null) {
+
+		if (id != null) {
 			model = pricelistService.findOne(id);
 		} else {
 			model.setCustomertypeid(customertypeid);
-			model.setItemid(itemid);		
+			model.setItemid(itemid);
 		}
-		
-		model.setPrice(price);
-		
+
+		if (!model.validatePayoutPrice(payoutPrice)) {
+			return null;
+		}
+
+		model.setPayoutPrice(payoutPrice);
 		pricelistService.save(model);
-		
+
 		return "redirect:" + request.getHeader("Referer");
 	}
 }

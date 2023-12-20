@@ -1,13 +1,11 @@
 package com.printmanagement.service.impl;
 
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,7 +17,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.printmanagement.converter.OrdersConverter;
+import com.printmanagement.converter.PriceListConverter;
 import com.printmanagement.dto.OrdersDTO;
+import com.printmanagement.dto.PayoutPrice;
+import com.printmanagement.dto.PriceListDTO;
 import com.printmanagement.dto.ReportBusinessPerformanceDTO;
 import com.printmanagement.entity.CustomerEntity;
 import com.printmanagement.entity.CustomerTypeEntity;
@@ -46,6 +47,8 @@ public class OrdersService implements IOrdersService {
 	@Autowired
 	private PriceListRepository pricelistRepository;
 	@Autowired
+	private PriceListConverter pricelistConverter;
+	@Autowired
 	MailSenderUtil mailSenderUtil;
 
 	@Override
@@ -56,10 +59,16 @@ public class OrdersService implements IOrdersService {
 		CustomerTypeEntity customertypeEntity = customerEntity.getCustomertype();
 		PriceListEntity priceListEntity = pricelistRepository.findOneByCustomertypeeAndItemm(customertypeEntity,
 				itemEntity);
+		PriceListDTO priceListDto = pricelistConverter.toDto(priceListEntity);
+		List<PayoutPrice> payoutPriceList = priceListDto.getPayoutPrice();
 		Date date = Calendar.getInstance().getTime();
 		DateFormat dateFormat = new SimpleDateFormat("dd/M/yyyy HH:mm:ss");
 		String strDescription = "";
 		// String msgStr = "";
+
+		if (payoutPriceList == null || payoutPriceList.isEmpty()) {
+			return null;
+		}
 
 		if (dto.getId() != null) {
 			OrdersEntity old = orderRepository.findOne(dto.getId());
@@ -72,8 +81,11 @@ public class OrdersService implements IOrdersService {
 			dto.setWidth((float) Math.round(dto.getWidth() * 100) / 100);
 			dto.setHeight((float) Math.round(dto.getHeight() * 100) / 100);
 			dto.setArea((float) Math.round(dto.getWidth() * dto.getHeight() * dto.getQuantity() * 100) / 100);
-			dto.setPrice(priceListEntity.getPrice());
-			dto.setTotal(0L + Math.round(priceListEntity.getPrice() * dto.getArea()));
+
+			PayoutPrice payoutPrice = payoutPriceList.stream().filter(p -> dto.getArea() >= p.area).findFirst()
+					.orElse(payoutPriceList.get(payoutPriceList.size() - 1));
+			dto.setPrice(payoutPrice.price);
+			dto.setTotal(0L + Math.round(dto.getPrice() * dto.getArea()));
 
 			ordersEntity = orderConverter.toEntity(old, dto);
 			ordersEntity.setDebt(ordersEntity.getTotal() - ordersEntity.getPaid());
@@ -101,8 +113,12 @@ public class OrdersService implements IOrdersService {
 			dto.setWidth((float) Math.round(dto.getWidth() * 100) / 100);
 			dto.setHeight((float) Math.round(dto.getHeight() * 100) / 100);
 			dto.setArea((float) Math.round(dto.getWidth() * dto.getHeight() * dto.getQuantity() * 100) / 100);
-			dto.setPrice(priceListEntity.getPrice());
-			dto.setTotal(0L + Math.round(priceListEntity.getPrice() * dto.getArea()));
+
+			PayoutPrice payoutPrice = payoutPriceList.stream().filter(p -> dto.getArea() >= p.area).findFirst()
+					.orElse(payoutPriceList.get(payoutPriceList.size() - 1));
+			dto.setPrice(payoutPrice.price);
+			dto.setTotal(0L + Math.round(dto.getPrice() * dto.getArea()));
+
 			dto.setDebt(dto.getTotal());
 			dto.setPaid(0L);
 			dto.setCode(generateOrderCode());
@@ -259,15 +275,15 @@ public class OrdersService implements IOrdersService {
 	public ReportBusinessPerformanceDTO reportBusinessPerformanceOrder(Date startDate, Date endDate) {
 		Object obj = orderRepository.reportBusinessPerformanceOrder(startDate, endDate);
 		ReportBusinessPerformanceDTO dto = new ReportBusinessPerformanceDTO();
-		
-		 try {
-			 
-			 dto.setCount(((BigInteger)((Object[])obj)[0]).longValue());
-			 dto.setTotalSaleOrder(((Object[]) obj)[1]== null ? null : ((BigDecimal) ((Object[]) obj)[1]).longValue());
-			 dto.setTotalPaid(((Object[]) obj)[2]== null ? null : ((BigDecimal) ((Object[]) obj)[2]).longValue());
-			 dto.setTotalDebt(((Object[]) obj)[3]== null ? null : ((BigDecimal) ((Object[]) obj)[3]).longValue());
-			 Double totalArea =((Object[]) obj)[4]== null ? 0 : (Double)((Object[]) obj)[4];
-			 dto.setTotalPrintArea(totalArea);
+
+		try {
+
+			dto.setCount(((BigInteger) ((Object[]) obj)[0]).longValue());
+			dto.setTotalSaleOrder(((Object[]) obj)[1] == null ? null : ((BigDecimal) ((Object[]) obj)[1]).longValue());
+			dto.setTotalPaid(((Object[]) obj)[2] == null ? null : ((BigDecimal) ((Object[]) obj)[2]).longValue());
+			dto.setTotalDebt(((Object[]) obj)[3] == null ? null : ((BigDecimal) ((Object[]) obj)[3]).longValue());
+			Double totalArea = ((Object[]) obj)[4] == null ? 0 : (Double) ((Object[]) obj)[4];
+			dto.setTotalPrintArea(totalArea);
 		} catch (Exception e) {
 			System.out.println("Err cast Obj to ReportBusinessPerformanceDTO");
 		}

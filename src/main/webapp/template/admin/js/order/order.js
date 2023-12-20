@@ -32,17 +32,19 @@ $(".orderrow td input").on({
 });
 
 $('.modelquantity').change(function() {
-	orderid = $(this).parent().parent().attr('data-orderid');
-    let quantity = parseInt($(this).val());
-    let height = parseFloat($("#height" + orderid).val());
-    let width = parseFloat($("#width" + orderid).val());
-    let area = parseFloat(width * height * quantity).toFixed(2);
-    let price = parseInt(formatCurrencyToNumer($("#price" + orderid).text()));
-    let total = parseInt(price * area);
-    $("#area" + orderid).text(area);
-    $("#total" + orderid).text(formatNumber(total+"₫") + " ₫");
-    $("#paid" + orderid).change();
-  });
+	let element = $(this);
+	calculateData(element);
+});
+
+$('.modelheight').change(function() {
+	let element = $(this);
+	calculateData(element);
+});
+  
+ $('.modelwidth').change(function() {
+	let element = $(this);
+	calculateData(element);
+ });
 
 $('.modelpaid').change(function() {
 	orderid = $(this).parent().parent().attr('data-orderid');
@@ -79,31 +81,12 @@ $('.modeldebt').change(function() {
     }
 });
 
-$('.modelheight').change(function() {
-	orderid = $(this).parent().parent().attr('data-orderid');
-    let height = parseFloat($(this).val());
-    let width = parseFloat($("#width" + orderid).val());
-    let quantity = parseInt($("#quantity" + orderid).val());
-    let area = parseFloat(width * height * quantity).toFixed(2);
-    $("#area" + orderid).text(area);
-    $("#quantity" + orderid).change();
-  });
-  
-  $('.modelwidth').change(function() {
-	orderid = $(this).parent().parent().attr('data-orderid');
-    let height = parseFloat($("#height" + orderid).val());
-    let width = parseFloat($(this).val());
-    let quantity = parseInt($("#quantity" + orderid).val());
-    let area = parseFloat(width * height * quantity).toFixed(2);
-    $("#area" + orderid).text(area);
-    $("#quantity" + orderid).change();
-  });
-
 function formatCurrencyToNumer(variable) {
   // format number $1,234,567₫ vnđ  to 1234567
+  console.log(variable);
   return variable.replace(/,/g, "").replace("$", "").replace("vnđ", "").replace("₫", "").replace(/ /g, "");
 }
-
+	
 function getOrderRowData(orderid) {
     var data = {};
     data["id"] = orderid;

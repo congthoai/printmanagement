@@ -230,43 +230,25 @@
       });
     }
     
-    $('.modelpaid').change(function() {
-      let total = parseInt($('.modeltotal').val());
-      let paid = parseInt($(this).val());
-      let unpaid = total - paid;
-      $('.modeldebt').val(unpaid);
-      $('.modeldebt').change();
-    });
-    
     $('.modelheight').change(function() {
-      let height = parseFloat($('.modelheight').val());
-      let width = parseFloat($('.modelwidth').val());
-      let quantity = parseInt($('.modelquantity').val());
-      let area = parseFloat(width * height * quantity).toFixed(2);
-      $('.modelarea').val(area);
-      $('.modelquantity').change();
+    	calculateData();
     });
     
     $('.modelwidth').change(function() {
-      let height = parseFloat($('.modelheight').val());
-      let width = parseFloat($(this).val());
-      let quantity = parseInt($('.modelquantity').val());
-      let area = parseFloat(width * height * quantity).toFixed(2);
-      $('.modelarea').val(area);
-      $('.modelquantity').change();
+    	calculateData();
     });
     
     $('.modelquantity').change(function() {
-      let height = parseFloat($('.modelheight').val());
-      let width = parseFloat($('.modelwidth').val());
-      let quantity = parseInt($(this).val());
-      let area = parseFloat(width * height * quantity).toFixed(2);
-      let price = parseFloat($('.modelprice').val());
-      let total = parseInt(price * area);
-      $('.modelarea').val(area);
-      $('.modeltotal').val(total);
-      $('.modelpaid').change();
+    	calculateData();
     });
+    
+    $('.modelpaid').change(function() {
+        let total = parseInt($('.modeltotal').val());
+        let paid = parseInt($(this).val());
+        let unpaid = total - paid;
+        $('.modeldebt').val(unpaid);
+        $('.modeldebt').change();
+      });
     
     $('.modeldebt').change(function() {
       let debt = parseInt($(this).val());
@@ -287,26 +269,41 @@
 	$('.select2-container').css("padding", "initial");
 	
 	$(".modelitemid").change(function () {
-		changeItemCustomer();
+		calculateData();
 	});
 	
 	$(".modelcustomerid").change(function() {
-		changeItemCustomer();
+		calculateData();
 	});
 	
-	function changeItemCustomer() {
-		customerid = $("#customerid").val();
-		itemid = $("#itemid").val();
+	function calculateData() {
+		if($('#quantity').val() == "" || $('#width').val() == "" || $('#height').val() == "") {
+	        return;
+	    }
 		
+		let height = parseFloat($('.modelheight').val());
+        let width = parseFloat($('.modelwidth').val());
+        let quantity = parseInt($('.modelquantity').val());
+        let area = parseFloat(width * height * quantity).toFixed(2);
+        $('.modelarea').val(area);
+        
+        let customerid = $("#customerid").val();
+		let itemid = $("#itemid").val();
 		$.ajax({
 			url : '${pricelistAPI}/filter?itemid=' + itemid + "&customerid=" + customerid,
 			type : 'GET',
 			contentType : 'application/json',
 			success : function(data) {
-				//console.log(data);
-				price = data["price"];
+				console.log(data);
+				let payoutPrice = data.payoutPrice;
+				let price = payoutPrice[payoutPrice.length-1].price;
+				if(area.length > 0) {
+					area = parseFloat(area);
+					price = payoutPrice.find(p => p.area <= area).price;
+				}
 				$(".modelprice").val(price);
-				$(".modelquantity").change();
+				$('.modeltotal').val(parseInt(price * area));
+		        $('.modelpaid').change();
 			},
 			error : function(error) {
 				alert("Không lấy được thông tin Đơn giá tương ứng");

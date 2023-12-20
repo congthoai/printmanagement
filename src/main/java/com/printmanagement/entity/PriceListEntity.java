@@ -20,6 +20,9 @@ public class PriceListEntity extends BaseEntity {
 	
 	@Column(name = "price")
 	private Long price;
+	
+	@Column(name = "payout_price")
+	private String payoutPrice;
 
 	
 	public CustomerTypeEntity getCustomertypee() {
@@ -45,6 +48,12 @@ public class PriceListEntity extends BaseEntity {
 	public void setPrice(Long price) {
 		this.price = price;
 	}
-	
-	
+
+	public String getPayoutPrice() {
+		return payoutPrice;
+	}
+
+	public void setPayoutPrice(String payoutPrice) {
+		this.payoutPrice = payoutPrice;
+	}
 }

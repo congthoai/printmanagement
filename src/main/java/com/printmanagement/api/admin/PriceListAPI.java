@@ -16,39 +16,43 @@ import org.springframework.web.bind.annotation.RestController;
 import com.printmanagement.dto.PriceListDTO;
 import com.printmanagement.service.IPriceListService;
 
-@RestController(value="pricelistApiOfAdmin")
+@RestController(value = "pricelistApiOfAdmin")
 public class PriceListAPI {
 	@Autowired
 	private IPriceListService pricelistService;
-	
+
 	@PostMapping("/api/pricelist")
-	public PriceListDTO createPriceList(@RequestBody PriceListDTO PriceListDTO) {		
+	public PriceListDTO createPriceList(@RequestBody PriceListDTO PriceListDTO) {
 		return pricelistService.save(PriceListDTO);
 	}
-	
+
 	@PutMapping("/api/pricelist")
-	public PriceListDTO updatePriceList(@RequestBody PriceListDTO PriceListDTO) {	
+	public PriceListDTO updatePriceList(@RequestBody PriceListDTO PriceListDTO) {
+		if (!PriceListDTO.validatePayoutPrice(PriceListDTO.getPayoutPriceStr())) {
+			return null;
+		}
 		return pricelistService.save(PriceListDTO);
 	}
-	
+
 	@DeleteMapping("/api/pricelist")
 	public void deletePriceList(@RequestBody long[] ids) {
 		pricelistService.delete(ids);
 	}
-	
-	@GetMapping(value= {"/api/pricelist", "/api/pricelist/{id}"})
-	public List<PriceListDTO> getPriceList(@PathVariable(required = false) Long id) {	
+
+	@GetMapping(value = { "/api/pricelist", "/api/pricelist/{id}" })
+	public List<PriceListDTO> getPriceList(@PathVariable(required = false) Long id) {
 		List<PriceListDTO> list = new ArrayList<>();
-		if(id == null) {
-			return  pricelistService.findAll();
+		if (id == null) {
+			return pricelistService.findAll();
 		}
 		list.add(pricelistService.findOne(id));
 		return list;
 	}
-	
-	@GetMapping(value= {"/api/pricelist/filter"})
-	public PriceListDTO getPriceListByItemIdAndCustomertypeId(@RequestParam("itemid") Long itemid, @RequestParam("customerid") Long customerid) {	
-		
+
+	@GetMapping(value = { "/api/pricelist/filter" })
+	public PriceListDTO getPriceListByItemIdAndCustomertypeId(@RequestParam("itemid") Long itemid,
+			@RequestParam("customerid") Long customerid) {
+
 		return pricelistService.findOnePriceListByItemIdAndCustomertypeId(itemid, customerid);
 	}
 }

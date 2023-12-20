@@ -32,7 +32,7 @@ public class PriceListService implements IPriceListService {
 	private ItemRepository itemRepository;
 	@Autowired
 	private CustomerRepository customerRepository;
-	
+
 	@Override
 	public PriceListDTO save(PriceListDTO dto) {
 		PriceListEntity pricelistEntity = new PriceListEntity();
@@ -45,26 +45,26 @@ public class PriceListService implements IPriceListService {
 		} else {
 			pricelistEntity = pricelistConverter.toEntity(dto);
 		}
-		
+
 		pricelistEntity.setCustomertypee(customertypeEntity);
 		pricelistEntity.setItemm(itemEntity);
 		return pricelistConverter.toDto(pricelistRepository.save(pricelistEntity));
 	}
-	
+
 	@Override
 	public List<PriceListDTO> findAll(Pageable pageable) {
 		List<PriceListDTO> rs = new ArrayList<>();
-		List<PriceListEntity> entites = pricelistRepository.findAll(pageable).getContent(); 
+		List<PriceListEntity> entites = pricelistRepository.findAll(pageable).getContent();
 		for (PriceListEntity entity : entites) {
 			rs.add(pricelistConverter.toDto(entity));
 		}
 		return rs;
 	}
-	
+
 	@Override
 	public List<PriceListDTO> findAll() {
 		List<PriceListDTO> rs = new ArrayList<>();
-		List<PriceListEntity> entites = pricelistRepository.findAll(); 
+		List<PriceListEntity> entites = pricelistRepository.findAll();
 		for (PriceListEntity entity : entites) {
 			rs.add(pricelistConverter.toDto(entity));
 		}
@@ -93,8 +93,9 @@ public class PriceListService implements IPriceListService {
 		ItemEntity itemEntity = itemRepository.getOne(itemid);
 		CustomerEntity customerEntity = customerRepository.findOne(customerid);
 		CustomerTypeEntity customertypeEntity = customerEntity.getCustomertype();
-		PriceListEntity priceListEntity = pricelistRepository.findOneByCustomertypeeAndItemm(customertypeEntity, itemEntity);
-		
+		PriceListEntity priceListEntity = pricelistRepository.findOneByCustomertypeeAndItemm(customertypeEntity,
+				itemEntity);
+
 		return pricelistConverter.toDto(priceListEntity);
 	}
 
@@ -102,7 +103,7 @@ public class PriceListService implements IPriceListService {
 	public List<PriceListDTO> findListAllCustomerByItem(Long itemId) {
 		List<PriceListDTO> rs = new ArrayList<>();
 		List<Object[]> resultList = pricelistRepository.findListAllCustomerByItem(itemId);
-		
+
 		for (Object[] objects : resultList) {
 			PriceListDTO dto = new PriceListDTO();
 			dto.setId(objects[0] == null ? null : ((BigInteger) objects[0]).longValue());
@@ -110,9 +111,10 @@ public class PriceListService implements IPriceListService {
 			dto.setCustomertypeName((String) objects[2]);
 			dto.setItemid(objects[3] == null ? null : ((BigInteger) objects[3]).longValue());
 			dto.setPrice(objects[4] == null ? null : ((BigInteger) objects[4]).longValue());
+			dto.setPayoutPrice(objects[5] == null ? null : (String) objects[5]);
 			rs.add(dto);
 		}
-		
+
 		return rs;
 	}
 

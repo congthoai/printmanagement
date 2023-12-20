@@ -21,6 +21,7 @@ public class PriceListConverter {
 		dto.setCustomertypeid(entity.getCustomertypee().getId());
 		dto.setItemid(entity.getItemm().getId());
 		dto.setPrice(entity.getPrice());
+		dto.setPayoutPrice(entity.getPayoutPrice());
 		dto.setItemName(entity.getItemm().getName());
 		dto.setCustomertypeName(entity.getCustomertypee().getName());
 		dto.setCreatedBy(entity.getCreatedBy());
@@ -36,6 +37,7 @@ public class PriceListConverter {
 		entity.setCustomertypee(customertypeRepository.findOne(dto.getCustomertypeid()));
 		entity.setItemm(itemRepository.findOne(dto.getItemid()));
 		entity.setPrice(dto.getPrice());
+		entity.setPayoutPrice(dto.getPayoutPriceStr());
 		
 		return entity;
 	}
@@ -44,6 +46,7 @@ public class PriceListConverter {
 		entity.setCustomertypee(customertypeRepository.findOne(dto.getCustomertypeid()));
 		entity.setItemm(itemRepository.findOne(dto.getItemid()));
 		entity.setPrice(dto.getPrice());
+		entity.setPayoutPrice(dto.getPayoutPriceStr());
 		
 		return entity;
 	}

@@ -460,28 +460,45 @@
 			
 			$(".modelitem").change(function () {
 				let element = $(this);
-				changeItemCustomer(element);
+				calculateData(element);
 			});
 			
 			$(".modelcustomerid").change(function () {
-				let element = $(this);
-				changeItemCustomer(element);
+                let element = $(this);
+				calculateData(element);
 			});
 			
-			function changeItemCustomer(element) {
-				orderid = element.parent().parent().attr('data-orderid');
-				customerid = $("#customerid" + orderid).val();
-				itemid = $("#itemid" + orderid).val();
-				
+			function calculateData(element) {
+			    let orderid = element.parent().parent().attr('data-orderid');
+				if($("#quantity" + orderid).val() == "" || $("#width" + orderid).val() == "" || $("#height" + orderid).val() == "") {
+			        return;
+			    }
+			    let height = parseFloat($("#height" + orderid).val());
+			    let width = parseFloat($("#width" + orderid).val());
+			    let quantity = parseInt($("#quantity" + orderid).val());
+			    let area = parseFloat(width * height * quantity).toFixed(2);
+			    $("#area" + orderid).text(area);
+			    
+			    let customerid = $("#customerid" + orderid).val();
+				let itemid = $("#itemid" + orderid).val();
+			    
 				$.ajax({
 					url : '${pricelistAPI}/filter?itemid=' + itemid + "&customerid=" + customerid,
 					type : 'GET',
 					contentType : 'application/json',
 					success : function(data) {
-						//console.log(data);
-						price = data["price"];
+						console.log(data);
+						let payoutPrice = data.payoutPrice;
+						let price = payoutPrice[payoutPrice.length-1].price;
+						if(area.length > 0) {
+							area = parseFloat(area);
+							price = payoutPrice.find(p => p.area <= area).price;
+						}
+						
+						let total = parseInt(price * area);
 						$("#price" + orderid).text(formatNumber(price+"₫") + " ₫");
-						$("#quantity" + orderid).change();
+						$("#total" + orderid).text(formatNumber(total+"₫") + " ₫");
+			    		$("#paid" + orderid).change();
 					},
 					error : function(error) {
 						alert("Không lấy được thông tin Đơn giá tương ứng");

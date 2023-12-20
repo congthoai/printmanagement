@@ -48,9 +48,15 @@
 								  </div>
 							</div>
 							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">Đơn giá cũ</label>
+								<div class="col-sm-9">
+									<form:input type="number" min="1000" path="price" cssClass="col-xs-10 col-sm-5 modelprice" disabled="true"/>
+								</div>
+							</div>
+							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">Đơn giá</label>
 								<div class="col-sm-9">
-									<form:input type="number" min="1000" path="price" cssClass="col-xs-10 col-sm-5 modelprice" />
+									<form:input type="text" path="payoutPriceStr" cssClass="col-xs-10 col-sm-5 modelpayoutprice" placeholder="Area1:Price1;Area2:Price2;...;Area3:Price3"/>
 								</div>
 							</div>
 							<form:hidden path="id" id="newId" />
@@ -87,6 +93,11 @@
 			e.preventDefault();
 			if($('.modelprice').val() == "") {
 				$('.modelprice').focus();
+				return;
+			}
+			let regex = /^\d+(\.\d+)?:\d+(\.\d+)?(;\d+(\.\d+)?:\d+(\.\d+)?)*$/g;
+			if(!regex.test($('.modelpayoutprice').val())) {
+				$('.modelpayoutprice').focus();
 				return;
 			}
 			var data = {};
