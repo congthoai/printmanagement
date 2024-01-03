@@ -17,6 +17,7 @@
 		<class>com.printmanagement.entity.PurchaseMaterialEntity</class>
 		<class>com.printmanagement.entity.PurchaseMaterialDetailEntity</class>
 		<class>com.printmanagement.entity.CostEntity</class>
+		<class>com.printmanagement.entity.ZaloTokenEntity</class>
 		<properties>
 
 			<property name="hibernate.show_sql" value="true" />
