@@ -59,6 +59,12 @@ public class OrdersEntity extends BaseEntity{
 	
 	@Column(name = "paymentdate")
 	private Date paymentDate;
+	
+	@Column(name = "deliverydate")
+	private Date deliveryDate;
+	
+	@Column(name = "notified")
+	private Boolean notified;
 
 	
 	public Date getPaymentDate() {
@@ -188,6 +194,20 @@ public class OrdersEntity extends BaseEntity{
 	public void setTotal(Long total) {
 		this.total = total;
 	}
-	
-	
+
+	public Date getDeliveryDate() {
+		return deliveryDate;
+	}
+
+	public void setDeliveryDate(Date deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+
+	public Boolean getNotified() {
+		return notified;
+	}
+
+	public void setNotified(Boolean notified) {
+		this.notified = notified;
+	}
 }

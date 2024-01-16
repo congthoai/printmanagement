@@ -33,6 +33,13 @@ public class CustomerService implements ICustomerService {
 	
 	@Override
 	public CustomerDTO save(CustomerDTO dto) {
+		String phone = dto.getPhone();
+		if(phone!=null && !phone.isEmpty()) {
+			if(!phone.matches("^(84)+([0-9]{9})$")) {
+				throw new RuntimeException("Phone number is wrong!");
+			}
+		}
+
 		CustomerEntity customerEntity = new CustomerEntity();
 		CustomerTypeEntity customerType = customertypeRepository.findOne(dto.getCustomertypeid());
 		if (dto.getId() != null) {

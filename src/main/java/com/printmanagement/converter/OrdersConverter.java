@@ -36,6 +36,8 @@ public class OrdersConverter {
 		dto.setModifiedBy(entity.getModifiedBy());
 		dto.setPaymentDate(entity.getPaymentDate());
 		dto.setOrderDate(entity.getOrderDate());
+		dto.setDeliveryDate(entity.getDeliveryDate());
+		dto.setNotified(entity.getNotified());
 		dto.setDescription(entity.getDescription());
 		dto.setStatus(entity.getStatus());
 		String statusAlert = "label-warning";
@@ -61,6 +63,7 @@ public class OrdersConverter {
 		entity.setStatus(dto.getStatus());
 		entity.setPaid(dto.getPaid());
 		entity.setDebt(dto.getDebt());
+		entity.setDeliveryDate(dto.getDeliveryDate());
 		
 		return entity;
 	}
@@ -77,6 +80,7 @@ public class OrdersConverter {
 		entity.setStatus(dto.getStatus());
 		entity.setPaid(dto.getPaid());
 		entity.setDebt(dto.getDebt());
+		entity.setDeliveryDate(dto.getDeliveryDate());
 		
 		return entity;
 	}

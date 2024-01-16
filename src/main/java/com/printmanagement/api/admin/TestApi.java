@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.printmanagement.component.executor.CronTaskExecutor;
 import com.printmanagement.component.json.JsonInternal;
-import com.printmanagement.test.domain.ZaloRenewResult;
+import com.printmanagement.module.zalo.domain.ZaloRenewResult;
 
 @RestController(value="testApi")
 

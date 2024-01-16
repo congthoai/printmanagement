@@ -290,4 +290,16 @@ public class OrdersService implements IOrdersService {
 
 		return dto;
 	}
+	
+	public List<OrdersEntity> getDeliveryList() {
+		return orderRepository.getDeliveryList();
+	}
+	
+	public void sendNotify(List<Long> ids) {
+		if(ids == null || ids.isEmpty()) {
+			return;
+		}
+		
+		orderRepository.sendNotify(ids);
+	}
 }

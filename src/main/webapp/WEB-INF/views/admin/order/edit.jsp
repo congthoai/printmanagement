@@ -125,9 +125,14 @@
                 </div>
               </div>
               <div class="form-group">
-	                <label class="col-sm-2 control-label no-padding-right" for="form-field-1">Tạo bởi</label>
+	               <%--  <label class="col-sm-2 control-label no-padding-right" for="form-field-1">Tạo bởi</label>
 		                <div class="col-sm-3">
 		                  <input type="text" class="col-xs-10 col-sm-10" readonly="true" value="${model.createdBy}"/>
+	                </div> --%>
+	                 <label class="col-sm-2 control-label no-padding-right" for="form-field-1">Hẹn giao</label>
+	                <div class="col-sm-3">
+	                  <input type="text" name="deliveryDate" id="deliveryDate" class="col-xs-10 col-sm-10 datepk"
+	                  	value="<fmt:formatDate pattern = 'dd/MM/yyyy hh:mm:ss' value = '${model.deliveryDate}' />"/>
 	                </div>
 	                <label class="col-sm-2 control-label no-padding-right" for="form-field-1">Nội dung</label>
 					<div class="col-sm-3">
@@ -187,6 +192,9 @@
       });
       $('.modelitemid').attr("disabled", true);
       $('.modelcustomerid').attr("disabled", true);
+      
+      data["deliveryDate"] = $("#deliveryDate").datepicker('getDate');
+      
       var id = $('#newId').val();
       if (id == "") {
         // alert("Khong cho phep tao moi don hang tu Web!!");

@@ -26,11 +26,13 @@ public class OrdersDTO extends AbstractDTO<OrdersDTO> {
 	private CustomerDTO customer;
 	private Date paymentDate;
 	private Date orderDate;
+	private Date deliveryDate;
 	private String orderDateStr;
 	private String startDate;
 	private String endDate;
 	private String startPaymentDate;
 	private String endPaymentDate;
+	private Boolean notified;
 	
 	public String getCode() {
 		return code;
@@ -173,6 +175,17 @@ public class OrdersDTO extends AbstractDTO<OrdersDTO> {
 	public void setOrderDateStr(String orderDateStr) {
 		this.orderDateStr = orderDateStr;
 	}
-
+	public Date getDeliveryDate() {
+		return deliveryDate;
+	}
+	public void setDeliveryDate(Date deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+	public Boolean getNotified() {
+		return notified;
+	}
+	public void setNotified(Boolean notified) {
+		this.notified = notified;
+	}
 	
 }

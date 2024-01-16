@@ -5,11 +5,14 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.printmanagement.entity.OrdersEntity;
 
+@Transactional
 public interface OrdersRepository extends JpaRepository<OrdersEntity, Long> {
 	@Query(value = "SELECT * FROM orders od WHERE True AND (?1 is null or customer_id = ?1) "
 			+ " AND (?2 is null or ?2 = '' or status = ?2) "
@@ -84,4 +87,11 @@ public interface OrdersRepository extends JpaRepository<OrdersEntity, Long> {
 			+ " WHERE TRUE AND (?1 is null or ?1 = '' or orderdate >= ?1) " 
 			+ " AND (?2 is null or ?2 = '' or orderdate <= ?2) ", nativeQuery = true)
 	Object reportBusinessPerformanceOrder(Date startDate, Date endDate);
+	
+	@Query(value = "SELECT * FROM orders od WHERE deliverydate is not null AND deliverydate <= NOW() AND notified is false", nativeQuery = true)
+	List<OrdersEntity> getDeliveryList();
+	
+	@Modifying(clearAutomatically = true)
+    @Query(value = "UPDATE orders SET notified = true WHERE id IN (:ids)", nativeQuery=true)
+    void sendNotify(@Param("ids") List<Long> ids);
 }
