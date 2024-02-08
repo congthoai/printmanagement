@@ -10,7 +10,10 @@ import org.springframework.data.jpa.repository.Query;
 import com.printmanagement.entity.PurchaseMaterialEntity;
 
 public interface PurchaseMaterialRepository extends JpaRepository<PurchaseMaterialEntity, Long> {
+	List<PurchaseMaterialEntity> findAllByOrderByIdDesc();
+	
 	List<PurchaseMaterialEntity> findByPurchasedateBetween(Date startDate, Date endDate, Pageable pageable);
+	
 	@Query(value = "SELECT SUM(total) FROM purchasematerial WHERE True AND purchasedate >= ?1 AND purchasedate <= ?2", nativeQuery = true)
 	Long sumTotalByPurchasedateBetween(Date startDate, Date endDate);
 	

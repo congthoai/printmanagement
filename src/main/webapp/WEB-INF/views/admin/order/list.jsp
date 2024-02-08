@@ -138,8 +138,8 @@
 														<th style="width: 260px">Nội dung</th>
 														<th style="width: 70px">Chiều dài</th>
 														<th style="width: 70px">Chiều rộng</th>
-														<th style="width: 70px">Diện tích</th>
 														<th style="width: 70px">Số lượng</th>
+														<th style="width: 70px">Diện tích</th>
 														<th>Đơn giá</th>
 														<th>Thành tiền</th>
 														<th>Trạng thái</th>
@@ -184,11 +184,11 @@
 																<input id="height${item.id}" type="number" class="modelheight" step="0.01" value="${item.height}" style="width:100%;border: 1px solid white;"/>
 															</td>
 															
-															<td id="area${item.id}">${item.area}</td>
-															
 															<td>
 																<input id="quantity${item.id}" class="modelquantity" type="number" value="${item.quantity}" style="width:100%;border: 1px solid white;"/>
 															</td>
+															
+															<td id="area${item.id}">${item.area}</td>
 															
 															<td id="price${item.id}"><fmt:formatNumber type="number" groupingUsed="true" value="${item.price}"/> ₫</td>	
 															

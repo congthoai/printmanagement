@@ -39,7 +39,7 @@ public class PurchaseMaterialAPI {
 	public List<PurchaseMaterialDTO> getPurchaseMaterial(@PathVariable(required = false) Long id) {	
 		List<PurchaseMaterialDTO> list = new ArrayList<>();
 		if(id == null) {
-			return  purchaseMaterialService.findAll();
+			return  purchaseMaterialService.findAllByOrderByIdDesc();
 		}
 		list.add(purchaseMaterialService.findOne(id));
 		return list;

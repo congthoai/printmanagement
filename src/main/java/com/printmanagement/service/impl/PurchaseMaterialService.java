@@ -54,6 +54,16 @@ public class PurchaseMaterialService implements IPurchaseMaterialService {
 		}
 		return rs;
 	}
+	
+	@Override
+	public List<PurchaseMaterialDTO> findAllByOrderByIdDesc() {
+		List<PurchaseMaterialDTO> rs = new ArrayList<>();
+		List<PurchaseMaterialEntity> entites = purchaseMaterialRepository.findAllByOrderByIdDesc(); 
+		for (PurchaseMaterialEntity entity : entites) {
+			rs.add(purchaseMaterialConverter.toDto(entity));
+		}
+		return rs;
+	}
 
 	@Override
 	public List<PurchaseMaterialDTO> findAll(Pageable pageable) {

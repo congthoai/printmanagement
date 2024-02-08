@@ -88,7 +88,7 @@ public interface OrdersRepository extends JpaRepository<OrdersEntity, Long> {
 			+ " AND (?2 is null or ?2 = '' or orderdate <= ?2) ", nativeQuery = true)
 	Object reportBusinessPerformanceOrder(Date startDate, Date endDate);
 	
-	@Query(value = "SELECT * FROM orders od WHERE deliverydate is not null AND deliverydate <= NOW() AND notified is false", nativeQuery = true)
+	@Query(value = "SELECT * FROM orders od WHERE deliverydate is not null AND deliverydate <= NOW() AND (notified is false OR notified is null)", nativeQuery = true)
 	List<OrdersEntity> getDeliveryList();
 	
 	@Modifying(clearAutomatically = true)

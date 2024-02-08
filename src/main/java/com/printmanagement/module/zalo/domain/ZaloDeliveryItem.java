@@ -2,7 +2,7 @@ package com.printmanagement.module.zalo.domain;
 
 public class ZaloDeliveryItem {
 
-	public final String mode = "development";
+	//public final String mode = "development";
 	public final String template_id = "296657";
 	public final String phone;
 	public final long orderId;

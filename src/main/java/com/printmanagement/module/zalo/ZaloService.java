@@ -59,8 +59,14 @@ public class ZaloService {
 		this.cronTaskExecutor = cronTaskExecutor;
 	
         cronTaskExecutor.schedule(this::renew, "0 /5 * * * ?");
+        cronTaskExecutor.schedule(this::testZaloToken, "* 8 * * * ?");
         cronTaskExecutor.schedule(this::sendDeliveryMessage, "0 /1 * * * ?");
 	}
+    
+    public void testZaloToken() {
+    	sendZaloNotification(new ZaloDeliveryItem(0L, "84983583845", "TestAPI", "Inphattin", "Chao buoi sang!", "Day la tin nhan tu dong", "^^"));
+    	sendZaloNotification(new ZaloDeliveryItem(0L, "84947010777", "TestAPI", "Inphattin", "Chao buoi sang!", "Day la tin nhan tu dong", "^^"));
+    }
     
 	public void sendDeliveryMessage() {
 		if(ZALO_TOKEN.equals(StringUtils.Empty)) {

@@ -10,6 +10,7 @@ import com.printmanagement.dto.PurchaseMaterialDTO;
 public interface IPurchaseMaterialService {
 	PurchaseMaterialDTO save(PurchaseMaterialDTO dto);
 	List<PurchaseMaterialDTO> findAll();
+	List<PurchaseMaterialDTO> findAllByOrderByIdDesc();
 	List<PurchaseMaterialDTO> findAll(Pageable pageable);
 	PurchaseMaterialDTO findOne(Long id);
 	void delete(long[] ids);
